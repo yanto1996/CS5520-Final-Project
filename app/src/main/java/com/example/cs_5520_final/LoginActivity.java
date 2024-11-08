@@ -1,10 +1,12 @@
 package com.example.cs_5520_final;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -32,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         // Set up login button click listener
         loginButton.setOnClickListener(v -> {
             if (validateInput()) {
+                hideKeyboard(v);  // Hide the keyboard when login is triggered
                 performLogin();
             }
         });
@@ -78,22 +81,16 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString().trim();
 
         try {
-            // TODO: This is just a simulation of an API call.
-            //  Need to implement actual login logic here w/ database
+            // Simulate login success (replace with actual login logic later)
             new Handler().postDelayed(() -> {
-                try {
-                    // Simulate login success
-                    progressBar.setVisibility(View.GONE);
-                    loginButton.setEnabled(true);
-                    Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+                loginButton.setEnabled(true);
+                Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
 
-                    // Start main activity
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                } catch (Exception e) {
-                    handleLoginError(e);
-                }
+                // Start main activity
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }, 2000);
         } catch (Exception e) {
             handleLoginError(e);
@@ -106,5 +103,13 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(LoginActivity.this,
                 "Login failed: " + e.getMessage(),
                 Toast.LENGTH_LONG).show();
+    }
+
+    // Hide keyboard after login button is clicked
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }
