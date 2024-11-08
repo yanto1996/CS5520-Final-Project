@@ -1,24 +1,23 @@
 package com.example.cs_5520_final;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Patterns;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
+
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button loginButton;
     private ProgressBar progressBar;
+    private TextView forgotPasswordText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +29,25 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
         progressBar = findViewById(R.id.progressBar);
+        forgotPasswordText = findViewById(R.id.forgotPasswordText);
 
         // Set up login button click listener
         loginButton.setOnClickListener(v -> {
             if (validateInput()) {
-                hideKeyboard(v);  // Hide the keyboard when login is triggered
                 performLogin();
             }
+        });
+
+        // Set up forgot password text click listener
+        forgotPasswordText.setOnClickListener(v -> {
+            String email = emailEditText.getText().toString().trim();
+            if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(LoginActivity.this, "Please enter a valid email first.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Simulate sending a password reset link
+            Toast.makeText(LoginActivity.this, "Password reset link sent to " + email, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -81,17 +92,10 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString().trim();
 
         try {
-            // Simulate login success (replace with actual login logic later)
-            new Handler().postDelayed(() -> {
-                progressBar.setVisibility(View.GONE);
-                loginButton.setEnabled(true);
-                Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-
-                // Start main activity
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }, 2000);
+            // Simulate login success
+            progressBar.setVisibility(View.GONE);
+            loginButton.setEnabled(true);
+            Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             handleLoginError(e);
         }
@@ -103,13 +107,5 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(LoginActivity.this,
                 "Login failed: " + e.getMessage(),
                 Toast.LENGTH_LONG).show();
-    }
-
-    // Hide keyboard after login button is clicked
-    private void hideKeyboard(View view) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 }
