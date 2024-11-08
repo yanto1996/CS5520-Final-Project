@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 public class PasswordResetActivity extends AppCompatActivity {
 
     private EditText emailEditText;
-    private Button resetPasswordButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +19,7 @@ public class PasswordResetActivity extends AppCompatActivity {
 
         // Initialize views
         emailEditText = findViewById(R.id.emailEditText);
-        resetPasswordButton = findViewById(R.id.resetPasswordButton);
+        Button resetPasswordButton = findViewById(R.id.resetPasswordButton);
 
         resetPasswordButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString().trim();
@@ -30,7 +29,8 @@ public class PasswordResetActivity extends AppCompatActivity {
             }
 
             // Simulate sending a password reset link
-            Toast.makeText(PasswordResetActivity.this, "Password reset link sent to " + email, Toast.LENGTH_SHORT).show();
+            Toast.makeText(PasswordResetActivity.this,
+                    "Password reset link sent to " + email, Toast.LENGTH_SHORT).show();
             finish();  // Optionally, return to login screen after reset
         });
     }

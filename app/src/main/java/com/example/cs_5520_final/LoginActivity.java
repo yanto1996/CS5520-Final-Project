@@ -1,13 +1,14 @@
 package com.example.cs_5520_final;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,14 +41,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // Set up forgot password text click listener
         forgotPasswordText.setOnClickListener(v -> {
-            String email = emailEditText.getText().toString().trim();
-            if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(LoginActivity.this, "Please enter a valid email first.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // Simulate sending a password reset link
-            Toast.makeText(LoginActivity.this, "Password reset link sent to " + email, Toast.LENGTH_SHORT).show();
+            // Start PasswordResetActivity when "Forgot Password?" is clicked
+            Intent intent = new Intent(LoginActivity.this, PasswordResetActivity.class);
+            startActivity(intent);
         });
     }
 
