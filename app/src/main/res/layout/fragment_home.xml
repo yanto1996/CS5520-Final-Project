@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.HomeFragment">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- First Search Bar -->
+    <EditText
+        android:id="@+id/searchBar1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="to be filled with db stuff" />
+        android:layout_height="48dp"
+        android:hint="Search by keyword"
+        android:inputType="text" />
 
-</FrameLayout>
+    <!-- Second Search Bar -->
+    <EditText
+        android:id="@+id/searchBar2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Search by location"
+        android:inputType="text" />
+
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:text="Search" />
+
+    <TextView
+        android:id="@+id/searchResults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Results will appear here"
+        android:padding="8dp" />
+</LinearLayout>
