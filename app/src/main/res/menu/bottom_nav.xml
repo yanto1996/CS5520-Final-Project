@@ -5,9 +5,9 @@
         android:icon="@drawable/home_icon"
         android:title="Home" />
     <item
-        android:id="@+id/nav_favorite"
-        android:icon="@drawable/favorite_icon"
-        android:title="Favorite" />
+        android:id="@+id/nav_image_rec"
+        android:icon="@drawable/camera_icon"
+        android:title="ImageRecognition" />
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/profile_icon"

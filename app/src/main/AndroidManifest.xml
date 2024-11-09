@@ -13,28 +13,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CS_5520_Final"
         tools:targetApi="31">
-
-        <!-- Set LoginActivity as the launcher activity -->
+        <activity
+            android:name=".view.ProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CS_5520_Final" />
+        <activity
+            android:name=".view.ImageRecActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CS_5520_Final" /> <!-- Set LoginActivity as the launcher activity -->
         <activity
             android:name=".view.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- HomeActivity -->
+        </activity> <!-- HomeActivity -->
         <activity
             android:name=".view.HomeActivity"
-            android:exported="false" />
-
-        <!-- PasswordResetActivity -->
+            android:exported="false" /> <!-- PasswordResetActivity -->
         <activity
             android:name=".view.PasswordResetActivity"
-            android:exported="false" />
-
-        <!-- MainActivity (no longer the launcher activity) -->
+            android:exported="false" /> <!-- MainActivity (no longer the launcher activity) -->
         <activity
             android:name=".MainActivity"
             android:exported="true" />
