@@ -1,12 +1,13 @@
-package com.example.cs_5520_final;
+package com.example.cs_5520_final.view;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.cs_5520_final.R;
 
 public class PasswordResetActivity extends AppCompatActivity {
 
