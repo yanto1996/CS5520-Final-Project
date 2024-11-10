@@ -33,8 +33,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerViewSetUp(view);
         petViewModel.fetchPets(10);
-        searchType(view);
-        searchState(view);
+        setUpSearch(view);
     }
 
     private void recyclerViewSetUp(View view){
@@ -49,30 +48,34 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void searchType(View view){
-        EditText searchbar1 = view.findViewById(R.id.searchBar1);
+    private void setUpSearch(View view) {
+        EditText searchTypeBar = view.findViewById(R.id.searchBar1);
+        EditText searchStateBar = view.findViewById(R.id.searchBar2);
         Button searchButton = view.findViewById(R.id.searchButton);
 
         searchButton.setOnClickListener(v -> {
-            String search = searchbar1.getText().toString().trim();
-            // if search bar is empty do nothing
-            if (search.isEmpty()){
+            String typeSearch = searchTypeBar.getText().toString().trim();
+            String stateSearch = searchStateBar.getText().toString().trim();
+
+            if (typeSearch.isEmpty() && stateSearch.isEmpty()) {
                 return;
             }
-            petViewModel.searchByTypeOrBreed(search);
-        });
-    }
 
-    private void searchState(View view){
-        EditText searchbar2 = view.findViewById(R.id.searchBar2);
-        Button searchButton = view.findViewById(R.id.searchButton);
-
-        searchButton.setOnClickListener(v ->{
-            String search = searchbar2.getText().toString().trim();
-            if (search.isEmpty()){
-                return;
+            // If both fields are filled, do a combined search
+            if (!typeSearch.isEmpty() && !stateSearch.isEmpty()) {
+                petViewModel.searchCombo(typeSearch, stateSearch);
             }
-            petViewModel.searchByState(search);
+
+            // If only typeSearch is filled, search by type or breed
+            if (!typeSearch.isEmpty()) {
+                petViewModel.searchByTypeOrBreed(typeSearch);
+            }
+
+            // If only stateSearch is filled, search by state
+            if (!stateSearch.isEmpty()) {
+                petViewModel.searchByState(stateSearch);
+            }
         });
     }
 }
+
