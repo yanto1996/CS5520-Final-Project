@@ -36,10 +36,14 @@ public class PetAdapter extends RecyclerView.Adapter<PetViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull PetViewHolder holder, int position) {
         PetModel pet = petList.get(position);
-        holder.petName.setText("Name: " + pet.getName());
-        holder.petAge.setText("Age: " + pet.getAge());
-        holder.petBreed.setText("Breed: " + pet.getBreed());
+
+        // Ensure non-null values are passed to setText
+        holder.petName.setText(pet.getName() != null ? pet.getName() : "No Name");
+        holder.petAge.setText(String.valueOf(pet.getAge()));
+        holder.petBreed.setText(pet.getBreed() != null ? pet.getBreed() : "Unknown Breed");
+        holder.Location.setText(pet.getState() != null ? pet.getState() : "Unknown Location");
     }
+
 
     @Override
     public int getItemCount() {

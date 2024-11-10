@@ -1,54 +1,54 @@
 package com.example.cs_5520_final.view;
 
 import android.os.Bundle;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.cs_5520_final.R;
-
-import com.example.cs_5520_final.model.PetDao;
-import com.example.cs_5520_final.model.PetModel;
-
-import java.util.List;
+import com.example.cs_5520_final.controller.PetAdapter;
+import com.example.cs_5520_final.model.PetViewModel;
 
 public class HomeFragment extends Fragment {
 
-    private static final String TAG = "HomeFragment";
+    private PetViewModel petViewModel;
+    private PetAdapter petAdapter;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        // Test the PetDao here
-        testPetDao();
-        return view;
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
-    private void testPetDao() {
-        // Initialize PetDao
-        PetDao petDao = new PetDao(requireContext());
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        // Fetch all pets from the database
-        List<PetModel> pets = petDao.getTenPets(10);
+        // Step 1: Find the RecyclerView
+        RecyclerView petRecyclerView = view.findViewById(R.id.petRecyclerView);
 
-        // Log the fetched data
-        if (pets.isEmpty()) {
-            Log.d(TAG, "No pets found in the database.");
-        } else {
-            for (PetModel pet : pets) {
-                Log.d(TAG, "Pet: " + pet.getName() + ", Type: " + pet.getType() +
-                        ", Age: " + pet.getAge() + ", Breed: " + pet.getBreed());
-            }
-        }
+        // Step 2: Initialize the adapter
+        petAdapter = new PetAdapter();
 
-        // Close the database connection
-        petDao.close();
+        // Step 3: Set up the RecyclerView
+        petRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        petRecyclerView.setAdapter(petAdapter);
+
+        // Step 4: Initialize the ViewModel
+        petViewModel = new ViewModelProvider(this).get(PetViewModel.class);
+
+        // Step 5: Observe the LiveData from ViewModel
+        petViewModel.getPets().observe(getViewLifecycleOwner(), pets -> {
+            // Update the adapter's data when the data changes
+            petAdapter.setPets(pets);
+        });
+
+        // Step 6: Fetch the pets (e.g., limit to 10 pets)
+        petViewModel.fetchPets(10);
     }
 }
