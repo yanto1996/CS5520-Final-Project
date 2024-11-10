@@ -18,8 +18,7 @@ public class PetDao {
     public List<PetModel> getAllPets() {
         List<PetModel> pets = new ArrayList<>();
         Cursor cursor = database.query("dataset",
-                new String[]{"Type", "Name", "Age", "Breed", "Gender", "Color",
-                        "Fur Length", "Vaccinated", "State", "Description"},
+                new String[]{"Type", "Name", "Age", "Breed", "Gender", "Color", "[Fur Length]", "Vaccinated", "State", "Description"},
                 null, null, null, null, null);
 
         if (cursor != null) {
