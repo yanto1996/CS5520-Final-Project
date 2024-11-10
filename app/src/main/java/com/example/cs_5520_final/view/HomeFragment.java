@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
 import com.example.cs_5520_final.R;
 import com.example.cs_5520_final.controller.PetAdapter;
 import com.example.cs_5520_final.model.PetViewModel;
@@ -28,27 +31,36 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        recyclerViewSetUp(view);
+        petViewModel.fetchPets(10);
+        searchType(view);
+    }
 
-        // Step 1: Find the RecyclerView
+    private void recyclerViewSetUp(View view){
         RecyclerView petRecyclerView = view.findViewById(R.id.petRecyclerView);
-
-        // Step 2: Initialize the adapter
         petAdapter = new PetAdapter();
-
-        // Step 3: Set up the RecyclerView
         petRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         petRecyclerView.setAdapter(petAdapter);
-
-        // Step 4: Initialize the ViewModel
         petViewModel = new ViewModelProvider(this).get(PetViewModel.class);
-
-        // Step 5: Observe the LiveData from ViewModel
         petViewModel.getPets().observe(getViewLifecycleOwner(), pets -> {
             // Update the adapter's data when the data changes
             petAdapter.setPets(pets);
         });
+    }
 
-        // Step 6: Fetch the pets (e.g., limit to 10 pets)
-        petViewModel.fetchPets(10);
+    private void searchType(View view){
+        EditText searchbar = view.findViewById(R.id.searchBar1);
+        Button searchButton = view.findViewById(R.id.searchButton);
+
+        searchButton.setOnClickListener(v -> {
+            String search = searchbar.getText().toString().trim();
+
+            // if search bar is empty do nothing
+            if (search.isEmpty()){
+                return;
+            }
+
+            petViewModel.searchByType(search);
+        });
     }
 }

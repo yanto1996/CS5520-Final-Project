@@ -26,8 +26,11 @@ public class HomeActivity extends AppCompatActivity {
             loadFragment(selectedFragment);
         }
 
-        // Updated Listener for bottom navigation item clicks
         bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (bottomNavigationView.getSelectedItemId() == item.getItemId()){
+                return false;
+            }
+
             switch (item.getItemId()) {
                 case R.id.nav_home:
                     selectedFragment = new HomeFragment();

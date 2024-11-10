@@ -18,12 +18,17 @@ public class PetViewModel extends AndroidViewModel {
         petDao = new PetDao(application);
     }
 
-    // Method to fetch the pets from the database and set it to LiveData
+    // Send thread to get 10 random pets asynchronously
     public void fetchPets(int limit) {
         new Thread(() -> {
             List<PetModel> pets = petDao.getTenPets(limit);
             petListLiveData.postValue(pets);
         }).start();
+    }
+
+    public void searchByType(String searchType){
+        List<PetModel> pets = petDao.getPetsByType(searchType);
+        petListLiveData.setValue(pets);
     }
 
     public LiveData<List<PetModel>> getPets() {
