@@ -9,7 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PetViewHolder extends RecyclerView.ViewHolder {
     ImageView tempImage;
-    TextView petType, petName, petBreed, petAge, Location;
+    TextView petType;
+    public TextView petName;
+    public TextView petBreed;
+    public TextView petAge;
+    TextView Location;
     public PetViewHolder(@NonNull View itemView) {
         super(itemView);
     }
