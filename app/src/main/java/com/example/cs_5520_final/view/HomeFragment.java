@@ -34,6 +34,7 @@ public class HomeFragment extends Fragment {
         recyclerViewSetUp(view);
         petViewModel.fetchPets(10);
         searchType(view);
+        searchState(view);
     }
 
     private void recyclerViewSetUp(View view){
@@ -49,18 +50,29 @@ public class HomeFragment extends Fragment {
     }
 
     private void searchType(View view){
-        EditText searchbar = view.findViewById(R.id.searchBar1);
+        EditText searchbar1 = view.findViewById(R.id.searchBar1);
         Button searchButton = view.findViewById(R.id.searchButton);
 
         searchButton.setOnClickListener(v -> {
-            String search = searchbar.getText().toString().trim();
-
+            String search = searchbar1.getText().toString().trim();
             // if search bar is empty do nothing
             if (search.isEmpty()){
                 return;
             }
-
             petViewModel.searchByTypeOrBreed(search);
+        });
+    }
+
+    private void searchState(View view){
+        EditText searchbar2 = view.findViewById(R.id.searchBar2);
+        Button searchButton = view.findViewById(R.id.searchButton);
+
+        searchButton.setOnClickListener(v ->{
+            String search = searchbar2.getText().toString().trim();
+            if (search.isEmpty()){
+                return;
+            }
+            petViewModel.searchByState(search);
         });
     }
 }

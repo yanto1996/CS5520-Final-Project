@@ -26,8 +26,13 @@ public class PetViewModel extends AndroidViewModel {
         }).start();
     }
 
-    public void searchByTypeOrBreed(String searchType){
-        List<PetModel> pets = petDao.getPetsByTypeOrBreed(searchType);
+    public void searchByTypeOrBreed(String search){
+        List<PetModel> pets = petDao.getPetsByTypeOrBreed(search);
+        petListLiveData.setValue(pets);
+    }
+
+    public void searchByState(String search){
+        List<PetModel> pets = petDao.getPetsByState(search);
         petListLiveData.setValue(pets);
     }
 
