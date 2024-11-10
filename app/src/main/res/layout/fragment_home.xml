@@ -11,7 +11,7 @@
         android:id="@+id/searchBar1"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:hint="Search by type"
+        android:hint="Search by animal type or breed"
         android:inputType="text" />
 
     <!-- Second Search Bar -->

@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
                 return;
             }
 
-            petViewModel.searchByType(search);
+            petViewModel.searchByTypeOrBreed(search);
         });
     }
 }

@@ -46,11 +46,14 @@ public class PetDao {
     }
 
     // Query pet by type
-    public List<PetModel> getPetsByType(String searchType) {
+    public List<PetModel> getPetsByTypeOrBreed(String searchQuery) {
         List<PetModel> pets = new ArrayList<>();
+        String selection = "Type LIKE ? OR Breed LIKE ?";
+        String[] selectionArgs = new String[]{"%" + searchQuery + "%", "%" + searchQuery + "%"};
+
         Cursor cursor = database.query("dataset",
                 new String[]{"Type", "Name", "Age", "Breed", "Gender", "Color", "[Fur Length]", "Vaccinated", "State", "Description"},
-                "Type LIKE ?", new String[]{"%" + searchType + "%"},
+                selection, selectionArgs,
                 null, null, null);
 
         if (cursor != null) {
@@ -66,6 +69,7 @@ public class PetDao {
                     int vaccinated = cursor.getInt(cursor.getColumnIndexOrThrow("Vaccinated"));
                     String state = cursor.getString(cursor.getColumnIndexOrThrow("State"));
                     String description = cursor.getString(cursor.getColumnIndexOrThrow("Description"));
+
                     pets.add(new PetModel(type, name, age, breed, gender, color, furLength, vaccinated, state, description));
                 } while (cursor.moveToNext());
             }
@@ -74,4 +78,5 @@ public class PetDao {
 
         return pets;
     }
+
 }
