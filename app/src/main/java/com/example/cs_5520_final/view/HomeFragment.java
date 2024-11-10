@@ -67,15 +67,16 @@ public class HomeFragment extends Fragment {
             }
 
             // If only typeSearch is filled, search by type or breed
-            if (!typeSearch.isEmpty()) {
+            else if (!typeSearch.isEmpty()) {
                 petViewModel.searchByTypeOrBreed(typeSearch);
             }
 
             // If only stateSearch is filled, search by state
-            if (!stateSearch.isEmpty()) {
+            else if (!stateSearch.isEmpty()) {
                 petViewModel.searchByState(stateSearch);
             }
         });
     }
+
 }
 

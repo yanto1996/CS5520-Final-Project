@@ -10,18 +10,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cs_5520_final.R;
 
 public class PetViewHolder extends RecyclerView.ViewHolder {
-    ImageView tempImage;
-
     public TextView petName;
     public TextView petBreed;
     public TextView petAge;
     public TextView Location;
+
+    public ImageView petImage;
     public PetViewHolder(@NonNull View itemView) {
         super(itemView);
         petName = itemView.findViewById(R.id.petName);
         petBreed = itemView.findViewById(R.id.petBreed);
         petAge = itemView.findViewById(R.id.petAge);
         Location = itemView.findViewById(R.id.petLocation);
+        petImage = itemView.findViewById(R.id.petImage);
 
     }
 }

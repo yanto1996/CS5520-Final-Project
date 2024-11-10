@@ -10,8 +10,8 @@
         android:id="@+id/petImage"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/cat_image"
-        android:contentDescription="placeholder"
+        android:src="@drawable/profile_icon"
+        android:contentDescription="cat or dog icon"
         android:scaleType="centerCrop"
         android:layout_marginEnd="16dp"/>
 

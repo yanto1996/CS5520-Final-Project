@@ -3,15 +3,13 @@ package com.example.cs_5520_final.controller;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs_5520_final.R;
 import com.example.cs_5520_final.model.PetModel;
 import com.example.cs_5520_final.view.PetViewHolder;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +54,17 @@ public class PetAdapter extends RecyclerView.Adapter<PetViewHolder> {
         } else {
             holder.Location.setText("Unknown Location");
         }
-    }
 
+        // Set the image based on the pet type
+        if ("cat".equalsIgnoreCase(pet.getType())) {
+            holder.petImage.setImageResource(R.drawable.cat_image);
+        } else if ("dog".equalsIgnoreCase(pet.getType())) {
+            holder.petImage.setImageResource(R.drawable.dog_image);
+        } else {
+            holder.petImage.setImageResource(R.drawable.profile_icon);
+        }
+
+    }
 
     @Override
     public int getItemCount() {
