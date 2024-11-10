@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
         PetDao petDao = new PetDao(requireContext());
 
         // Fetch all pets from the database
-        List<PetModel> pets = petDao.getAllPets();
+        List<PetModel> pets = petDao.getTenPets(10);
 
         // Log the fetched data
         if (pets.isEmpty()) {

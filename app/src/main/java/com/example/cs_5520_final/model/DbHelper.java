@@ -19,19 +19,19 @@ public class DbHelper {
 
     public DbHelper(Context context) {
         this.context = context;
-        copyDatabaseIfNeeded(); // Automatically copy the database on initialization
+        copyDatabase();
     }
 
-    // Method to copy database from assets to internal storage if it doesn't already exist
-    private void copyDatabaseIfNeeded() {
+    // Method to copy database from assets to internal storage
+    private void copyDatabase() {
         File dbFile = new File(DB_PATH + DB_NAME);
         if (!dbFile.exists()) {
-            copyDatabase(dbFile);
+            copy(dbFile);
         }
     }
 
-    // Method to copy the database from the assets folder
-    private void copyDatabase(File dbFile) {
+    // Method to copy the database from the assets folder "taken from stack overflow"
+    private void copy(File dbFile) {
         try {
             // Create directories if they don't exist
             File parentDir = dbFile.getParentFile();

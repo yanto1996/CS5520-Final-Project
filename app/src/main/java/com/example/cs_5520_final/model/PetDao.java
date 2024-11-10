@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PetDao {
@@ -15,7 +16,7 @@ public class PetDao {
         database = dbHelper.openDatabase();
     }
 
-    public List<PetModel> getAllPets() {
+    public List<PetModel> getTenPets(int limit) {
         List<PetModel> pets = new ArrayList<>();
         Cursor cursor = database.query("dataset",
                 new String[]{"Type", "Name", "Age", "Breed", "Gender", "Color", "[Fur Length]", "Vaccinated", "State", "Description"},
@@ -40,7 +41,8 @@ public class PetDao {
             }
             cursor.close();
         }
-        return pets;
+        Collections.shuffle(pets);
+        return pets.subList(0,limit);
     }
 
     public void close() {
