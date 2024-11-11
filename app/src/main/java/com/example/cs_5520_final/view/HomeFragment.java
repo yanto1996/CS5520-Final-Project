@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
 
     private void recyclerViewSetUp(View view){
         RecyclerView petRecyclerView = view.findViewById(R.id.petRecyclerView);
-        petAdapter = new PetAdapter();
+        petAdapter = new PetAdapter(getContext());
         petRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         petRecyclerView.setAdapter(petAdapter);
         petViewModel = new ViewModelProvider(this).get(PetViewModel.class);
