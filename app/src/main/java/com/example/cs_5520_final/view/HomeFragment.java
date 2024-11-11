@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,32 +53,65 @@ public class HomeFragment extends Fragment {
     private void setUpSearch(View view) {
         EditText searchTypeBar = view.findViewById(R.id.searchBar1);
         EditText searchStateBar = view.findViewById(R.id.searchBar2);
+        EditText searchAgeBar = view.findViewById(R.id.searchAgeBar);
+
         Button searchButton = view.findViewById(R.id.searchButton);
 
         searchButton.setOnClickListener(v -> {
             String typeSearch = searchTypeBar.getText().toString().trim();
             String stateSearch = searchStateBar.getText().toString().trim();
+            String ageSearch = searchAgeBar.getText().toString().trim();
 
-            if (typeSearch.isEmpty() && stateSearch.isEmpty()) {
+            // If no search criteria is provided, do nothing
+            if (TextUtils.isEmpty(typeSearch) && TextUtils.isEmpty(stateSearch) && TextUtils.isEmpty(ageSearch)) {
                 return;
             }
 
-            // If both fields are filled, do a combined search
-            if (!typeSearch.isEmpty() && !stateSearch.isEmpty()) {
-                petViewModel.searchCombo(typeSearch, stateSearch);
+            // All three filters: type, state, and age
+            if (!TextUtils.isEmpty(typeSearch) && !TextUtils.isEmpty(stateSearch) && !TextUtils.isEmpty(ageSearch)) {
+                try {
+                    int age = Integer.parseInt(ageSearch);
+                    petViewModel.searchByTypeStateAndAge(typeSearch, stateSearch, age);
+                } catch (NumberFormatException e) {
+                    searchAgeBar.setError("Invalid age");
+                }
             }
-
-            // If only typeSearch is filled, search by type or breed
-            else if (!typeSearch.isEmpty()) {
+            // Type and age only
+            else if (!TextUtils.isEmpty(typeSearch) && !TextUtils.isEmpty(ageSearch)) {
+                try {
+                    int age = Integer.parseInt(ageSearch);
+                    petViewModel.searchByTypeAndAge(typeSearch, age);
+                } catch (NumberFormatException e) {
+                    searchAgeBar.setError("Invalid age");
+                }
+            }
+            // State and age only
+            else if (!TextUtils.isEmpty(stateSearch) && !TextUtils.isEmpty(ageSearch)) {
+                try {
+                    int age = Integer.parseInt(ageSearch);
+                    petViewModel.searchByStateAndAge(stateSearch, age);
+                } catch (NumberFormatException e) {
+                    searchAgeBar.setError("Invalid age");
+                }
+            }
+            // Only age
+            else if (!TextUtils.isEmpty(ageSearch)) {
+                try {
+                    int age = Integer.parseInt(ageSearch);
+                    petViewModel.searchByAge(age);
+                } catch (NumberFormatException e) {
+                    searchAgeBar.setError("Invalid age");
+                }
+            }
+            // Type only
+            else if (!TextUtils.isEmpty(typeSearch)) {
                 petViewModel.searchByTypeOrBreed(typeSearch);
             }
-
-            // If only stateSearch is filled, search by state
-            else if (!stateSearch.isEmpty()) {
+            // State only
+            else if (!TextUtils.isEmpty(stateSearch)) {
                 petViewModel.searchByState(stateSearch);
             }
         });
-    }
 
-}
+    }}
 
