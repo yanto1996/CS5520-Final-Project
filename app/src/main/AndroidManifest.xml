@@ -14,6 +14,9 @@
         android:theme="@style/Theme.CS_5520_Final"
         tools:targetApi="31">
         <activity
+            android:name=".view.RegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.LoginActivity"
             android:exported="true">
             <intent-filter>

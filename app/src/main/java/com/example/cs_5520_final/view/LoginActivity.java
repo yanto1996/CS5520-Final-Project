@@ -20,7 +20,6 @@ public class LoginActivity extends AppCompatActivity implements LoginController.
     private EditText passwordEditText;
     private Button loginButton;
     private ProgressBar progressBar;
-    private TextView forgotPasswordText;
     private LoginController loginController;
 
     @Override
@@ -33,8 +32,8 @@ public class LoginActivity extends AppCompatActivity implements LoginController.
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
         progressBar = findViewById(R.id.progressBar);
-        forgotPasswordText = findViewById(R.id.forgotPasswordText);
-
+        TextView forgotPasswordText = findViewById(R.id.forgotPasswordText);
+        TextView registration = findViewById(R.id.register);
         // Initialize Controller
         loginController = new LoginController(this);
 
@@ -53,6 +52,11 @@ public class LoginActivity extends AppCompatActivity implements LoginController.
         forgotPasswordText.setOnClickListener(v -> {
             // Start PasswordResetActivity when "Forgot Password?" is clicked
             Intent intent = new Intent(LoginActivity.this, PasswordResetActivity.class);
+            startActivity(intent);
+        });
+
+        registration.setOnClickListener(v ->{
+            Intent intent = new Intent (LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
     }
