@@ -22,7 +22,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Initialize views
         firstNameEditText = findViewById(R.id.firstName);
         lastNameEditText = findViewById(id.lastName);
         emailEditText = findViewById(R.id.email);

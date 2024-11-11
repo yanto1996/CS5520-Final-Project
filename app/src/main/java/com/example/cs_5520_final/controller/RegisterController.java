@@ -39,14 +39,13 @@ public class RegisterController {
 
         UserDao userDao = UserDb.getInstance(registerActivity).userDao();
         new Thread(() -> {
-            UserEntity existingUser = userDao.getUserByEmail(email); // Fetch the user by email
+            UserEntity existingUser = userDao.getUserByEmail(email);
             if (existingUser != null) {
                 // Email already exists
                 new Handler(Looper.getMainLooper()).post(() -> {
                     registerActivity.showToast("Email already exists. Please use a different email.");
                 });
             } else {
-                // Create UserEntity object to save in Room database
                 UserEntity user = new UserEntity(firstName, lastName, email, password, phoneNumber);
 
                 // Save user data in Room database

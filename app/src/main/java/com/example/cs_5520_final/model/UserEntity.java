@@ -11,9 +11,8 @@ public class UserEntity {
     private String lastName;
     private String email;
     private String password;
-    private String phoneNumber; // Changed from int to String
+    private String phoneNumber;
 
-    // Constructor
     public UserEntity(String firstName, String lastName, String email, String password, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -22,7 +21,6 @@ public class UserEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }
