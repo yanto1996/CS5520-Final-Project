@@ -15,4 +15,8 @@ public interface UserDao {
 
     @Query("SELECT * FROM users WHERE email = :email AND password = :password")
     UserEntity getUserByEmailAndPassword(String email, String password);
+
+    // New method to get the first user
+    @Query("SELECT * FROM users LIMIT 1")
+    UserEntity getUser();
 }
