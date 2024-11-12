@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.recyclerview)
     implementation(libs.room.common)
     implementation(libs.room.runtime)
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
