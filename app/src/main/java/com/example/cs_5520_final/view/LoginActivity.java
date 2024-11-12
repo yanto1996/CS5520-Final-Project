@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cs_5520_final.R;
 import com.example.cs_5520_final.controller.LoginController;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class LoginActivity extends AppCompatActivity implements LoginController.LoginCallback {
 
@@ -34,8 +35,16 @@ public class LoginActivity extends AppCompatActivity implements LoginController.
         progressBar = findViewById(R.id.progressBar);
         TextView forgotPasswordText = findViewById(R.id.forgotPasswordText);
         TextView registration = findViewById(R.id.register);
+        FloatingActionButton fabChat = findViewById(R.id.fab_chat);  // Add this line
+
         // Initialize Controller
         loginController = new LoginController(this);
+
+        // Set up FloatingActionButton click listener to open ChatActivity
+        fabChat.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
+            startActivity(intent);
+        });
 
         // Set up login button click listener
         loginButton.setOnClickListener(v -> {

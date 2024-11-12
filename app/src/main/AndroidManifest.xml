@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.cs_5520_final">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -34,6 +35,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+        <activity android:name=".view.ChatActivity" />
+
     </application>
 
 </manifest>
