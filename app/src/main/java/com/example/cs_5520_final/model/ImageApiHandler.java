@@ -13,11 +13,11 @@ import java.util.concurrent.TimeUnit;
 
 public class ImageApiHandler {
 
-    private static final String API_URL = "https://api.openai.com/v1/images"; // Replace with actual endpoint if needed
-    private String apiKey;
-    private OkHttpClient client;
+    private static final String API_URL = "https://api.openai.com/v1/chat/completions";  // Endpoint for ChatGPT API
+    private final String apiKey;
+    private final OkHttpClient client;
 
-    // Constructor that takes the API key as a parameter
+    // Constructor: initializes API key and sets up client
     public ImageApiHandler(String apiKey) {
         this.apiKey = apiKey;
         this.client = new OkHttpClient.Builder()
@@ -34,17 +34,18 @@ public class ImageApiHandler {
         }
 
         // Prepare the image file for sending
-        RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), imageFile);
+        RequestBody fileBody = RequestBody.create(imageFile, MediaType.parse("image/jpeg"));
         MultipartBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("file", imageFile.getName(), fileBody)
+                .addFormDataPart("model", "gpt-4-turbo")  // Specify the model
                 .build();
 
         // Build the request with the Authorization header
         Request request = new Request.Builder()
                 .url(API_URL)
                 .post(requestBody)
-                .addHeader("Authorization", "Bearer " + apiKey)  // Use the API key here
+                .addHeader("Authorization", "Bearer " + apiKey)  // Use the API key here for authentication
                 .build();
 
         // Execute the request and capture the response
