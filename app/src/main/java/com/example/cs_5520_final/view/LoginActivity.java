@@ -42,8 +42,10 @@ public class LoginActivity extends AppCompatActivity implements LoginController.
 
         // Set up FloatingActionButton click listener to open ChatActivity
         fabChat.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
+//            startActivity(intent);
+            new ChatFragment().show(getSupportFragmentManager(), "ChatFragment");
+
         });
 
         // Set up login button click listener

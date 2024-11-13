@@ -3,29 +3,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <ImageButton
+        android:id="@+id/close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_close"
+        android:contentDescription="Close Chat"
+        android:background="?attr/selectableItemBackgroundBorderless" />
 
     <TextView
         android:id="@+id/chat_response"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginBottom="16dp"
-        android:text="Welcome to the AI Assistant! Ask me anything about pets."
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:background="@drawable/response_background"
+    android:padding="8dp"
+    android:text="Welcome to the AI Assistant! Ask me anything about pets."
+    android:textColor="@color/black"
+    android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/user_input"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Type your question here"
-        android:inputType="text" />
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/send_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="Send" />
+        <EditText
+            android:id="@+id/user_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/send_button"
+            android:layout_alignParentStart="true"
+            android:hint="Type your question here"
+            android:inputType="text"
+            android:padding="8dp"
+            android:background="@drawable/input_background" />
+
+        <Button
+            android:id="@+id/send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:backgroundTint="@color/themeOrange"
+            android:text="Send"
+            android:textColor="@color/white" />
+    </RelativeLayout>
 
 </LinearLayout>
