@@ -101,7 +101,8 @@
         android:layout_margin="16dp"
         android:backgroundTint="@color/lightGray"
         android:tint="@color/white"
+        app:rippleColor="@android:color/transparent"
         android:src="@drawable/ic_chat"
-    android:contentDescription="Chat with AI Assistant"
+        android:contentDescription="Chat with AI Assistant"
         />
 </RelativeLayout>
