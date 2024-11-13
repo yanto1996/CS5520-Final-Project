@@ -17,28 +17,36 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import com.example.cs_5520_final.R;
 import com.example.cs_5520_final.controller.ChatAssistant;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cs_5520_final.R;
+import com.example.cs_5520_final.view.ChatAdapter;
+import com.example.cs_5520_final.controller.ChatAssistant;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ChatFragment extends DialogFragment {
 
-    private TextView chatResponse;
+    private RecyclerView chatRecyclerView;
+    private ChatAdapter chatAdapter;
+    private List<String> messages;
     private EditText userInput;
     private final ChatAssistant chatAssistant = new ChatAssistant();
     private ExecutorService executorService;
     private Handler mainHandler;
+
     @Override
     public void onStart() {
         super.onStart();
         if (getDialog() != null && getDialog().getWindow() != null) {
             int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.83);
-//            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            int height = (int) (getResources().getDisplayMetrics().widthPixels * 0.53);
-
+            int height = (int) (getResources().getDisplayMetrics().heightPixels *0.8 );
 
             getDialog().getWindow().setLayout(width, height);
             getDialog().getWindow().setGravity(Gravity.BOTTOM | Gravity.END); // 右下角对齐
@@ -51,26 +59,50 @@ public class ChatFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_chat, container, false);
 
-        chatResponse = view.findViewById(R.id.chat_response);
+        ImageButton closeButton = view.findViewById(R.id.close_button);
+        closeButton.setOnClickListener(v -> dismiss());
+
         userInput = view.findViewById(R.id.user_input);
         Button sendButton = view.findViewById(R.id.send_button);
-        ImageButton closeButton = view.findViewById(R.id.close_button);
+
+        chatRecyclerView = view.findViewById(R.id.chat_recycler_view);
+        messages = new ArrayList<>();
+        chatAdapter = new ChatAdapter(messages);
+        chatRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        chatRecyclerView.setAdapter(chatAdapter);
 
         executorService = Executors.newSingleThreadExecutor();
         mainHandler = new Handler(Looper.getMainLooper());
 
+
+        initializeBotMessage();
+
+
         sendButton.setOnClickListener(v -> {
             String prompt = userInput.getText().toString();
             if (!prompt.isEmpty()) {
+                addMessage("You: " + prompt);
                 sendChatRequest(prompt);
+                userInput.setText("");
             }
         });
-
-        closeButton.setOnClickListener(v -> dismiss());
 
         return view;
     }
 
+    private void initializeBotMessage() {
+
+        addMessage("Assistant: Hi there! I'm your AI assistant. Feel free to ask me anything, or you can start with one of these questions! \uD83D\uDE0A");
+        addMessage("Assistant: 1️⃣ I live in a small apartment. What kind of dog would suit my lifestyle?");
+        addMessage("Assistant: 2️⃣ I have young children at home. Are there any dog breeds that are great with kids?");
+        addMessage("Assistant: 3️⃣ I work long hours. What kind of pet would be low-maintenance and happy alone?");
+
+    }
+
+    private void sendPresetQuestion(String question) {
+        addMessage("You: " + question);
+        sendChatRequest(question);
+    }
 
     private String getApiKeyFromAssets(Context context) {
         Properties properties = new Properties();
@@ -95,14 +127,21 @@ public class ChatFragment extends DialogFragment {
             String apiKey = getApiKeyFromAssets(requireContext());
             String response = chatAssistant.chatGPT(apiKey, "gpt-3.5-turbo", prompt);
 
-            mainHandler.post(() -> chatResponse.setText(response));
+            mainHandler.post(() -> {
+                addMessage("Assistant: " + response);
+            });
         });
+    }
+
+    private void addMessage(String message) {
+        messages.add(message);
+        chatAdapter.notifyItemInserted(messages.size() - 1);
+        chatRecyclerView.scrollToPosition(messages.size() - 1);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         if (executorService != null && !executorService.isShutdown()) {
             executorService.shutdown();
         }
