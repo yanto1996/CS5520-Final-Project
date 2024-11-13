@@ -4,31 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#fbffe8">
 
-    <!-- First Search Bar -->
     <EditText
         android:id="@+id/searchBar1"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_margin="5dp"
         android:hint="Search by animal type or breed"
-        android:inputType="text" />
+        android:inputType="text"
+        android:background="@drawable/round_edit_text"
+        />
 
-    <!-- Second Search Bar -->
     <EditText
         android:id="@+id/searchBar2"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_margin="5dp"
         android:hint="Search by location"
-        android:inputType="text" />
+        android:inputType="text"
+        android:background="@drawable/round_edit_text"/>
 
-    <!-- Age Search Bar -->
     <EditText
         android:id="@+id/searchAgeBar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_margin="5dp"
         android:hint="Search by age"
-        android:inputType="number" />
+        android:inputType="number"
+        android:background="@drawable/round_edit_text"/>
 
     <Button
         android:id="@+id/searchButton"
@@ -36,7 +41,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
-        android:text="Search" />
+        android:backgroundTint="#FF5722"
+        android:text="Search"
+        android:textColorLink="@color/white" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/petRecyclerView"
