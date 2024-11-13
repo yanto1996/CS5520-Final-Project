@@ -39,6 +39,7 @@ public class ImageApiHandler {
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("file", imageFile.getName(), fileBody)
                 .addFormDataPart("model", "gpt-4-turbo")  // Specify the model
+                .addFormDataPart("prompt", "Identify the animal in the image and provide additional information.")
                 .build();
 
         // Build the request with the Authorization header

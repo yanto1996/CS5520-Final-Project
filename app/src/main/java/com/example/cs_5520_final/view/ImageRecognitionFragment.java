@@ -5,16 +5,19 @@ import static android.content.ContentValues.TAG;
 import com.example.cs_5520_final.R;
 import com.example.cs_5520_final.controller.ImageController;
 
-import android.app.Activity;
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.content.Intent;
+import android.app.Activity;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,25 +33,39 @@ import java.io.IOException;
 import java.io.InputStream;
 import android.util.Log;
 
-import android.provider.MediaStore.PickerMediaColumns;
-import androidx.activity.result.PickVisualMediaRequest;
-import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia;
-
-
 public class ImageRecognitionFragment extends Fragment {
 
-    private static final int PICK_IMAGE_REQUEST = 1;  // Request code for image selection
     private ImageController imageController;
     private ImageView imageView;
     private TextView resultTextView;
+
+    private final ActivityResultLauncher<String> permissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (!isGranted) {
+                    Toast.makeText(requireContext(), "Permission required to access media files", Toast.LENGTH_SHORT).show();
+                }
+            });
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image_recognition, container, false);
 
-        // Initialize ImageController with API key
-        String apiKey = "YOUR_API_KEY";  // Replace with actual API key
+        // Request permission based on Android version
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {  // Android 13+
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES);
+            }
+        } else {  // Android 12 and below
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+        }
+
+        // Initialize ImageController with actual API key
+        String apiKey = System.getenv("OPENAI_API_KEY_IMG"); // ASK FOR .ENV FILE
         imageController = new ImageController(apiKey);
 
         // Initialize UI components
@@ -62,14 +79,14 @@ public class ImageRecognitionFragment extends Fragment {
         return view;
     }
 
-    private final ActivityResultLauncher<PickVisualMediaRequest> pickImageLauncher = registerForActivityResult(
-            new PickVisualMedia(),
-            uri -> {
-                if (uri != null) {
+    private final ActivityResultLauncher<Intent> pickImageLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Uri uri = result.getData().getData();
                     Log.d(TAG, "pickImageLauncher: Image URI received - " + uri);
                     imageView.setImageURI(uri);
 
-                    // Convert URI to File and start scanning
                     try {
                         File imageFile = createFileFromUri(uri);
                         Log.d(TAG, "pickImageLauncher: Image file created - " + imageFile.getAbsolutePath());
@@ -86,13 +103,10 @@ public class ImageRecognitionFragment extends Fragment {
     );
 
     private void openImageSelector() {
-        pickImageLauncher.launch(new PickVisualMediaRequest.Builder()
-                .setMediaType(PickVisualMedia.ImageOnly.INSTANCE)
-                .build());
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        pickImageLauncher.launch(intent);
     }
-
-
-
 
     // Convert Uri to File so it can be processed by ImageController
     private File createFileFromUri(Uri uri) throws IOException {
@@ -134,4 +148,3 @@ public class ImageRecognitionFragment extends Fragment {
         });
     }
 }
-
