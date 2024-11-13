@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#fbffe8">
+    android:background="@color/themeLightBackground">
 
     <EditText
         android:id="@+id/searchBar1"
