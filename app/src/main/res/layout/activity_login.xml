@@ -99,6 +99,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
+        android:backgroundTint="@color/lightGray"
+        android:tint="@color/white"
         android:src="@drawable/ic_chat"
     android:contentDescription="Chat with AI Assistant"
         />

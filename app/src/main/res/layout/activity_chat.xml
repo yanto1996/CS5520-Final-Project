@@ -15,7 +15,6 @@
         android:contentDescription="Close Chat"
         android:background="?attr/selectableItemBackgroundBorderless" />
 
-    <!-- 对话记录 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_recycler_view"
         android:layout_width="match_parent"
@@ -23,7 +22,6 @@
         android:layout_weight="1"
         android:scrollbars="vertical" />
 
-    <!-- 输入框 -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
