@@ -92,17 +92,17 @@
         android:textColor="@color/material_dynamic_primary10" />
 </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_chat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/lightGray"
-        android:tint="@color/white"
-        app:rippleColor="@android:color/transparent"
-        android:src="@drawable/ic_chat"
-        android:contentDescription="Chat with AI Assistant"
-        />
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/fab_chat"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:backgroundTint="@color/lightGray"-->
+<!--        android:tint="@color/white"-->
+<!--        app:rippleColor="@android:color/transparent"-->
+<!--        android:src="@drawable/ic_chat"-->
+<!--        android:contentDescription="Chat with AI Assistant"-->
+<!--        />-->
 </RelativeLayout>

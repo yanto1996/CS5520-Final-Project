@@ -40,27 +40,27 @@ public class LoginActivity extends AppCompatActivity implements LoginController.
         TextView registration = findViewById(R.id.register);
 
 
-        FloatingActionButton fabChat = findViewById(R.id.fab_chat);
-        FloatingActionButton fab = findViewById(R.id.fab_chat);
-        fab.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightGray));
-        fab.setRippleColor(ContextCompat.getColor(this, R.color.lightGray));
+//        FloatingActionButton fabChat = findViewById(R.id.fab_chat);
+//        FloatingActionButton fab = findViewById(R.id.fab_chat);
+//        fab.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightGray));
+//        fab.setRippleColor(ContextCompat.getColor(this, R.color.lightGray));
+//
+//        TypedValue colorAccent = new TypedValue();
+//        getTheme().resolveAttribute(android.R.attr.colorAccent, colorAccent, true);
 
-        TypedValue colorAccent = new TypedValue();
-        getTheme().resolveAttribute(android.R.attr.colorAccent, colorAccent, true);
-
-        Log.d("ColorDebug", "colorAccent: #" + Integer.toHexString(colorAccent.data));
-        Log.d("ColorDebug", "FAB backgroundTint: #" + Integer.toHexString(fabChat.getBackgroundTintList().getDefaultColor()));
+//        Log.d("ColorDebug", "colorAccent: #" + Integer.toHexString(colorAccent.data));
+//        Log.d("ColorDebug", "FAB backgroundTint: #" + Integer.toHexString(fabChat.getBackgroundTintList().getDefaultColor()));
 
         // Initialize Controller
         loginController = new LoginController(this);
 
         // Set up FloatingActionButton click listener to open ChatActivity
-        fabChat.setOnClickListener(v -> {
-//            Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
-//            startActivity(intent);
-            new ChatFragment().show(getSupportFragmentManager(), "ChatFragment");
-
-        });
+//        fabChat.setOnClickListener(v -> {
+////            Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
+////            startActivity(intent);
+//            new ChatFragment().show(getSupportFragmentManager(), "ChatFragment");
+//
+//        });
 
         // Set up login button click listener
         loginButton.setOnClickListener(v -> {
