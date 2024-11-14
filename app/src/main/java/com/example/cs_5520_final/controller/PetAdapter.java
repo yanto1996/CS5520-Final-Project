@@ -1,11 +1,10 @@
 package com.example.cs_5520_final.controller;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -67,6 +66,8 @@ public class PetAdapter extends RecyclerView.Adapter<PetViewHolder> {
         holder.itemView.setOnClickListener(v -> showPetDetailsDialog(pet));
     }
 
+
+
     private void showPetDetailsDialog(PetModel pet) {
         // Create a detailed description for the pet
         String description = "Name: " + pet.getName() + "\n" +
@@ -80,27 +81,39 @@ public class PetAdapter extends RecyclerView.Adapter<PetViewHolder> {
                 "State: " + pet.getState() + "\n" +
                 "Description: " + pet.getDescription();
 
-        // Show the dialog
+        // Show the dialog with pet details
         new AlertDialog.Builder(context)
                 .setTitle("Pet Details")
                 .setMessage(description)
                 .setPositiveButton("Contact To Adopt", (dialog, which) -> {
-                    // Code to open email app with prefilled details
-                    Intent intent = new Intent(Intent.ACTION_SENDTO);
-                    intent.setData(Uri.parse("mailto:")); // Only email apps should handle this
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "Adoption Inquiry: " + pet.getName());
-                    intent.putExtra(Intent.EXTRA_TEXT, "Hello,\n\nI am interested in adopting " + pet.getName() + ". Please provide more information about the adoption process.\n\nThank you.");
+                    // Create a new dialog with an EditText for typing the message
+                    AlertDialog.Builder messageDialog = new AlertDialog.Builder(context);
+                    messageDialog.setTitle("Send Message");
 
-                    if (intent.resolveActivity(context.getPackageManager()) != null) {
-                        context.startActivity(intent);
-                    } else {
-                        // Show a message if no email app is available
-                        Toast.makeText(context, "No email app available", Toast.LENGTH_SHORT).show();
-                    }
+                    // Create an EditText for user to type a message
+                    final EditText input = new EditText(context);
+                    input.setHint("Type your message here...");
+                    messageDialog.setView(input);
+
+                    messageDialog.setPositiveButton("Send", (dialogInterface, i) -> {
+                        // Handle the message sending logic here
+                        String userMessage = input.getText().toString();
+
+                        if (!userMessage.isEmpty()) {
+                            // For now, show a Toast with the message (replace with actual sending logic)
+                            Toast.makeText(context, "Message sent: " + userMessage, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Please enter a message", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    messageDialog.setNegativeButton("Cancel", null);
+                    messageDialog.show();
                 })
                 .setNegativeButton("Close", null)
                 .show();
     }
+
 
 
     @Override
