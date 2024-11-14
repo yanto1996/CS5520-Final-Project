@@ -12,4 +12,6 @@
 /captures
 .externalNativeBuild
 .cxx
+.env
 local.properties
+/.idea

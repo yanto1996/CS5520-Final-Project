@@ -3,6 +3,11 @@
     <style name="Base.Theme.CS_5520_Final" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/themeOrange</item>
+        <item name="colorPrimaryVariant">@color/themeOrange</item>
+        <item name="colorAccent">@color/lightGray</item>
+        <item name="colorSecondary">@color/lightGray</item>
+        <item name="colorButtonNormal">@color/lightGray</item>
     </style>
 
     <style name="Theme.CS_5520_Final" parent="Base.Theme.CS_5520_Final" />

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.cs_5520_final.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -17,6 +18,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        // Floaring button
+        FloatingActionButton fabChat = findViewById(R.id.fab_chat);
+        fabChat.setOnClickListener(v -> {
+            new ChatFragment().show(getSupportFragmentManager(), "ChatFragment");
+        });
+
 
         bottomNavigationView = findViewById(R.id.bottomNav);
 
@@ -58,4 +65,6 @@ public class HomeActivity extends AppCompatActivity {
         }
         return false;
     }
+
+
 }
