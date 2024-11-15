@@ -12,7 +12,6 @@ public class PetModel {
     private String state;
     private String description;
 
-    // Constructor
     public PetModel(String type, String name, int age, String breed, String gender,
                     String color, String furLength, int vaccinated,
                     String state, String description) {

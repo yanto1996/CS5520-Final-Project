@@ -25,7 +25,6 @@ public class RegisterController {
         String password = registerActivity.getPassword();
         String phoneNumber = registerActivity.getPhoneNumber();
 
-        // Validate input fields
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() ||
                 password.isEmpty() || phoneNumber.isEmpty()) {
             registerActivity.showToast("Please fill out all fields");

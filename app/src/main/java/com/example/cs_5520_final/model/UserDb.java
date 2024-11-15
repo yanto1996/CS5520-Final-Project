@@ -11,10 +11,8 @@ public abstract class UserDb extends RoomDatabase {
 
     private static volatile UserDb INSTANCE;
 
-    // Abstract method for accessing the UserDao
     public abstract UserDao userDao();
 
-    // Singleton pattern to get the instance of the database
     public static UserDb getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (UserDb.class) {

@@ -32,7 +32,7 @@ public class LoginController {
         }
 
         if (password.length() < 3) {
-            callback.onLoginError("Password must be at least 6 characters");
+            callback.onLoginError("Password must be at least 3 characters");
             return false;
         }
 

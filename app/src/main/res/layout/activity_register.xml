@@ -10,36 +10,47 @@
         android:id="@+id/firstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="First Name"/>
+        android:layout_margin="5dp"
+        android:hint="First Name"
+        android:background="@drawable/round_edit_text"/>
 
     <EditText
         android:id="@+id/lastName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Last Name" />
+        android:layout_margin="5dp"
+        android:hint="Last Name"
+        android:background="@drawable/round_edit_text"/>
 
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email" />
+        android:layout_margin="5dp"
+        android:hint="Email"
+        android:background="@drawable/round_edit_text"/>
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:hint="Password"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        android:background="@drawable/round_edit_text"/>
 
     <EditText
         android:id="@+id/phoneNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Phone Number" />
+        android:layout_margin="5dp"
+        android:hint="Phone Number"
+        android:background="@drawable/round_edit_text"/>
 
     <Button
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text ="Register"/>
+        android:layout_margin="5dp"
+        android:layout_height="48dp"
+        android:text="Register" />
 </LinearLayout>

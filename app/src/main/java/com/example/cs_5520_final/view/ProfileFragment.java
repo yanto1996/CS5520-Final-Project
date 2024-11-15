@@ -43,14 +43,12 @@ public class ProfileFragment extends Fragment {
         UserDb userDb = UserDb.getInstance(requireContext());
         UserDao userDao = userDb.userDao();
 
-        // Fetch user data in background thread
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            UserEntity user = userDao.getUser(); // Assuming `getUser()` retrieves a user
+            UserEntity user = userDao.getUser();
             if (user != null) {
                 requireActivity().runOnUiThread(() -> {
                     profileName.setText(user.getFirstName() + " " + user.getLastName());
-//                    profileUsername.setText(user.getUsername());
                     profileEmail.setText(user.getEmail());
                     profilePhone.setText(user.getPhoneNumber());
                 });
