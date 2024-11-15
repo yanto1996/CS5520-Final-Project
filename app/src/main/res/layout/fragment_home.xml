@@ -7,43 +7,54 @@
     android:padding="16dp"
     android:background="@color/themeLightBackground">
 
-    <EditText
-        android:id="@+id/searchBar1"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_margin="5dp"
-        android:hint="Search by animal type or breed"
-        android:inputType="text"
-        android:background="@drawable/round_edit_text"
-        />
-
-    <EditText
-        android:id="@+id/searchBar2"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_margin="5dp"
-        android:hint="Search by location"
-        android:inputType="text"
-        android:background="@drawable/round_edit_text"/>
-
-    <EditText
-        android:id="@+id/searchAgeBar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_margin="5dp"
-        android:hint="Search by age"
-        android:inputType="number"
-        android:background="@drawable/round_edit_text"/>
-
-    <Button
-        android:id="@+id/searchButton"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="#FF5722"
-        android:text="Search"
-        android:textColorLink="@color/white" />
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/searchBar1"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="5dp"
+                android:hint="Search by animal type or breed"
+                android:inputType="text"
+                android:background="@drawable/round_edit_text" />
+
+            <EditText
+                android:id="@+id/searchBar2"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="5dp"
+                android:hint="Search by location"
+                android:inputType="text"
+                android:background="@drawable/round_edit_text" />
+
+            <EditText
+                android:id="@+id/searchAgeBar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="5dp"
+                android:hint="Search by age"
+                android:inputType="number"
+                android:background="@drawable/round_edit_text" />
+
+            <Button
+                android:id="@+id/searchButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#FF5722"
+                android:text="Search"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </ScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/petRecyclerView"
@@ -51,5 +62,4 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:layout_weight="1" />
-
 </LinearLayout>

@@ -13,7 +13,7 @@ import java.io.IOException;
 public class DbHelper {
 
     private static final String TAG = "PetDatabaseHelper";
-    private static final String DB_NAME = "petfinder.db"; // Database name
+    private static final String DB_NAME = "petfinder.db";
     private static final String DB_PATH = "/data/data/com.example.cs_5520_final/databases/";
     private Context context;
 
@@ -39,10 +39,7 @@ public class DbHelper {
                 parentDir.mkdirs();
             }
 
-            // Open your local db as the input stream
             InputStream inputStream = context.getAssets().open(DB_NAME);
-
-            // Open the empty db as the output stream
             OutputStream outputStream = new FileOutputStream(dbFile);
 
             // Transfer bytes from the input file to the output file

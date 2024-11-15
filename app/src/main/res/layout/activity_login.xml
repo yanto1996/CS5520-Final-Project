@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/themeLightBackground"
-    android:orientation="vertical"
     android:padding="16dp">
 
     <ImageView
+        android:id="@+id/loginIcon"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="32dp"
-        android:src="@drawable/login_icon" />
+        android:src="@drawable/login_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="32dp" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+        android:id="@+id/emailInputLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         app:boxStrokeColor="@color/design_default_color_primary_variant"
-        app:hintTextColor="@color/material_dynamic_primary10">
+        app:hintTextColor="@color/material_dynamic_primary10"
+        app:layout_constraintTop_toBottomOf="@id/loginIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <EditText
             android:id="@+id/emailEditText"
@@ -34,12 +38,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+        android:id="@+id/passwordInputLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         app:boxStrokeColor="@color/design_default_color_primary_variant"
         app:hintTextColor="@color/material_dynamic_primary10"
-        app:passwordToggleEnabled="true">
+        app:passwordToggleEnabled="true"
+        app:layout_constraintTop_toBottomOf="@id/emailInputLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <EditText
             android:id="@+id/passwordEditText"
@@ -52,57 +60,50 @@
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_width="383dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#FF5722"
         android:padding="12dp"
         android:text="Login"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/passwordInputLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:text="Don't have an account? Register here"
+        android:textColor="@color/material_dynamic_primary10"
         android:clickable="true"
         android:focusable="true"
         android:padding="20dp"
-        android:text="Don't have an account? Register here"
-        android:textColor="@color/material_dynamic_primary10" />
+        app:layout_constraintTop_toBottomOf="@id/loginButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/register"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
     <TextView
         android:id="@+id/forgotPasswordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:text="Forgot Password?"
+        android:textColor="@color/material_dynamic_primary10"
         android:clickable="true"
         android:focusable="true"
         android:padding="20dp"
-        android:text="Forgot Password?"
-        android:textColor="@color/material_dynamic_primary10" />
-</LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/fab_chat"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:layout_margin="16dp"-->
-<!--        android:backgroundTint="@color/lightGray"-->
-<!--        android:tint="@color/white"-->
-<!--        app:rippleColor="@android:color/transparent"-->
-<!--        android:src="@drawable/ic_chat"-->
-<!--        android:contentDescription="Chat with AI Assistant"-->
-<!--        />-->
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
