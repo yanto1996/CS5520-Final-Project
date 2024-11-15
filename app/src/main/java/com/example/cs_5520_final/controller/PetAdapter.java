@@ -66,8 +66,6 @@ public class PetAdapter extends RecyclerView.Adapter<PetViewHolder> {
         holder.itemView.setOnClickListener(v -> showPetDetailsDialog(pet));
     }
 
-
-
     private void showPetDetailsDialog(PetModel pet) {
         // Create a detailed description for the pet
         String description = "Name: " + pet.getName() + "\n" +
@@ -113,8 +111,6 @@ public class PetAdapter extends RecyclerView.Adapter<PetViewHolder> {
                 .setNegativeButton("Close", null)
                 .show();
     }
-
-
 
     @Override
     public int getItemCount() {

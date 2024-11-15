@@ -153,6 +153,7 @@ public class PetDao {
 
         return pets;
     }
+
     public List<PetModel> getPetsByTypeStateAndAge(String type, String state, int age) {
         List<PetModel> pets = new ArrayList<>();
         String selection = "Type LIKE ? AND State LIKE ? AND Age = ?";
@@ -170,24 +171,7 @@ public class PetDao {
         }
         return pets;
     }
-    public List<PetModel> getPetsByTypeAndAge(String type, int age) {
-        List<PetModel> pets = new ArrayList<>();
-        String selection = "Type LIKE ? AND Age = ?";
-        String[] selectionArgs = new String[]{"%" + type + "%", String.valueOf(age)};
 
-        Cursor cursor = database.query("dataset",
-                new String[]{"Type", "Name", "Age", "Breed", "Gender", "Color", "[Fur Length]", "Vaccinated", "State", "Description"},
-                selection, selectionArgs, null, null, null);
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                // Extract data and add to pets list
-                pets.add(extractPetFromCursor(cursor));
-            }
-            cursor.close();
-        }
-        return pets;
-    }
     public List<PetModel> getPetsByStateAndAge(String state, int age) {
         List<PetModel> pets = new ArrayList<>();
         String selection = "State LIKE ? AND Age = ?";
@@ -224,6 +208,45 @@ public class PetDao {
         }
         return pets;
     }
+
+    public List<PetModel> getPetsByTypeOrBreedAndAge(String typeOrBreedQuery, int ageQuery) {
+        List<PetModel> pets = new ArrayList<>();
+
+        String selection = "(Type LIKE ? AND Age LIKE ?) OR (Breed LIKE ? AND Age LIKE ?)";
+        String[] selectionArgs = new String[]{
+                "%" + typeOrBreedQuery + "%",
+                "%" + ageQuery + "%",
+                "%" + typeOrBreedQuery + "%",
+                "%" + ageQuery + "%"
+        };
+
+        Cursor cursor = database.query("dataset",
+                new String[]{"Type", "Name", "Age", "Breed", "Gender", "Color", "[Fur Length]", "Vaccinated", "State", "Description"},
+                selection, selectionArgs,
+                null, null, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    String type = cursor.getString(cursor.getColumnIndexOrThrow("Type"));
+                    String name = cursor.getString(cursor.getColumnIndexOrThrow("Name"));
+                    int age = cursor.getInt(cursor.getColumnIndexOrThrow("Age"));
+                    String breed = cursor.getString(cursor.getColumnIndexOrThrow("Breed"));
+                    String gender = cursor.getString(cursor.getColumnIndexOrThrow("Gender"));
+                    String color = cursor.getString(cursor.getColumnIndexOrThrow("Color"));
+                    String furLength = cursor.getString(cursor.getColumnIndexOrThrow("Fur Length"));
+                    int vaccinated = cursor.getInt(cursor.getColumnIndexOrThrow("Vaccinated"));
+                    String state = cursor.getString(cursor.getColumnIndexOrThrow("State"));
+                    String description = cursor.getString(cursor.getColumnIndexOrThrow("Description"));
+
+                    pets.add(new PetModel(type, name, age, breed, gender, color, furLength, vaccinated, state, description));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        return pets;
+    }
+
     private PetModel extractPetFromCursor(Cursor cursor) {
         String type = cursor.getString(cursor.getColumnIndexOrThrow("Type"));
         String name = cursor.getString(cursor.getColumnIndexOrThrow("Name"));
@@ -238,5 +261,4 @@ public class PetDao {
 
         return new PetModel(type, name, age, breed, gender, color, furLength, vaccinated, state, description);
     }
-
 }

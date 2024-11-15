@@ -68,7 +68,7 @@ public class HomeFragment extends Fragment {
             }
 
             // All three filters: type, state, and age
-            if (!TextUtils.isEmpty(typeSearch) && !TextUtils.isEmpty(stateSearch) && !TextUtils.isEmpty(ageSearch)) {
+            else if(!TextUtils.isEmpty(typeSearch) && !TextUtils.isEmpty(stateSearch) && !TextUtils.isEmpty(ageSearch)) {
                 try {
                     int age = Integer.parseInt(ageSearch);
                     petViewModel.searchByTypeStateAndAge(typeSearch, stateSearch, age);
@@ -76,15 +76,7 @@ public class HomeFragment extends Fragment {
                     searchAgeBar.setError("Invalid age");
                 }
             }
-            // Type and age only
-            else if (!TextUtils.isEmpty(typeSearch) && !TextUtils.isEmpty(ageSearch)) {
-                try {
-                    int age = Integer.parseInt(ageSearch);
-                    petViewModel.searchByTypeAndAge(typeSearch, age);
-                } catch (NumberFormatException e) {
-                    searchAgeBar.setError("Invalid age");
-                }
-            }
+
             // State and age only
             else if (!TextUtils.isEmpty(stateSearch) && !TextUtils.isEmpty(ageSearch)) {
                 try {
@@ -94,6 +86,21 @@ public class HomeFragment extends Fragment {
                     searchAgeBar.setError("Invalid age");
                 }
             }
+
+            // type / breed and state
+            else if (!TextUtils.isEmpty(typeSearch) && !TextUtils.isEmpty(stateSearch)){
+                    petViewModel.searchByTypeAndState(typeSearch, stateSearch);
+            }
+
+            else if (!TextUtils.isEmpty(typeSearch) && !TextUtils.isEmpty(ageSearch)){
+                try{
+                    int age = Integer.parseInt(ageSearch);
+                    petViewModel.searchByTypeOrBreedAndAge(typeSearch, age);
+                }catch (NumberFormatException e){
+                    searchAgeBar.setError("Invalid age");
+                }
+            }
+
             // Only age
             else if (!TextUtils.isEmpty(ageSearch)) {
                 try {
