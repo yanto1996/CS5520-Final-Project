@@ -14,17 +14,16 @@ public class ChatAssistant {
         try {
             System.out.println("Starting chatGPT method...");
 
-            // 构造 URL 和连接
             String urlString = "https://api.openai.com/v1/chat/completions";
             URL url = new URL(urlString);
+
+
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
+
+            
             connection.setRequestProperty("Authorization", "Bearer " + apiKey);
             connection.setRequestProperty("Content-Type", "application/json");
-
-            System.out.println("Setting up system message...");
-
-            // 手动构建 JSON 字符串
             String requestBody = "{"
                     + "\"model\": \"" + model + "\", "
                     + "\"messages\": ["
@@ -39,17 +38,18 @@ public class ChatAssistant {
                     + "\"frequency_penalty\": 0.13,"
                     + "\"presence_penalty\": 0.11"
                     + "}";
+            System.out.println("Setting up system message...");
+
+
 
             System.out.println("Request body: " + requestBody);
 
-            // 发送请求
             connection.setDoOutput(true);
             try (OutputStream os = connection.getOutputStream()) {
                 os.write(requestBody.getBytes("utf-8"));
             }
             System.out.println("Request sent successfully.");
 
-            // 读取响应
             int responseCode = connection.getResponseCode();
             if (responseCode == 200) {
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
@@ -77,61 +77,31 @@ public class ChatAssistant {
     }
     private static String parseResponse(String rawResponse) {
         try {
-            // 将原始响应解析为 JSON 对象
             JSONObject jsonResponse = new JSONObject(rawResponse);
 
-            // 检查是否包含 "choices" 数组
             if (!jsonResponse.has("choices")) {
                 return "Unable to parse response: 'choices' not found.";
             }
 
-            // 获取 "choices" 数组的第一个元素
             JSONArray choicesArray = jsonResponse.getJSONArray("choices");
             if (choicesArray.length() == 0) {
                 return "Unable to parse response: 'choices' is empty.";
             }
 
-            // 获取 "message" 对象中的 "content" 字段
             JSONObject firstChoice = choicesArray.getJSONObject(0);
             JSONObject messageObject = firstChoice.getJSONObject("message");
 
-            // 检查 "content" 字段是否存在
             if (!messageObject.has("content")) {
                 return "Unable to parse response: 'content' not found.";
             }
 
-            // 提取并返回 "content" 的内容
             String content = messageObject.getString("content");
-            return content.trim(); // 去掉首尾多余的空格
+            return content.trim();
         } catch (Exception e) {
             e.printStackTrace();
             return "Error while parsing response.";
         }
     }
-    public static String extractMessageFromJSONResponse(String response) {
-        try {
-            // 验证 "content" 字段是否存在
-            if (response == null || !response.contains("\"content\":\"")) {
-                System.err.println("Response does not contain 'content' field.");
-                return "Response parsing error.";
-            }
-
-            // 提取内容的开始和结束位置
-            int start = response.indexOf("\"content\":\"") + 10;
-            int end = response.indexOf("\"", start);
-
-            if (start > 9 && end > start) { // 确保 start 和 end 都合法
-                return response.substring(start, end);
-            } else {
-                System.err.println("Failed to extract message from response: invalid indexes.");
-                return "Response parsing error.";
-            }
-        } catch (Exception e) {
-            System.err.println("Exception while parsing response: " + e.getMessage());
-            return "Response parsing error.";
-        }
-    }
-
 
     public static String getApiKeyFromAssets() {
         Properties properties = new Properties();
@@ -150,13 +120,37 @@ public class ChatAssistant {
 
         return apiKey;
     }
+    public static String extractMessageFromJSONResponse(String response) {
+        try {
+            if (response == null || !response.contains("\"content\":\"")) {
+                System.err.println("Response does not contain 'content' field.");
+                return "Response parsing error.";
+            }
+
+            int start = response.indexOf("\"content\":\"") + 10;
+            int end = response.indexOf("\"", start);
+
+            if (start > 9 && end > start) {
+                return response.substring(start, end);
+            } else {
+                System.err.println("Failed to extract message from response: invalid indexes.");
+                return "Response parsing error.";
+            }
+        } catch (Exception e) {
+            System.err.println("Exception while parsing response: " + e.getMessage());
+            return "Response parsing error.";
+        }
+    }
+
+
+
 
 
 
     public static void main(String[] args) {
         String model = "gpt-3.5-turbo";
         String prompt = "I'm thinking of adopting a dog, but I live in an apartment. Any advice?";
-        String apiKey = getApiKeyFromAssets(); // 从文件读取 API Key
+        String apiKey = getApiKeyFromAssets();
         System.out.println("Loaded API Key: " + apiKey);
 
         if (apiKey != null) {
