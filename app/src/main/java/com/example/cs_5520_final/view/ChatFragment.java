@@ -40,6 +40,7 @@ public class ChatFragment extends DialogFragment {
     private final ChatAssistant chatAssistant = new ChatAssistant();
     private ExecutorService executorService;
     private Handler mainHandler;
+    private boolean isInitialMessageAdded = false;
 
     @Override
     public void onStart() {
@@ -49,8 +50,8 @@ public class ChatFragment extends DialogFragment {
             int height = (int) (getResources().getDisplayMetrics().heightPixels *0.8 );
 
             getDialog().getWindow().setLayout(width, height);
-            getDialog().getWindow().setGravity(Gravity.BOTTOM | Gravity.END); // 右下角对齐
-            getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent); // 透明背景
+            getDialog().getWindow().setGravity(Gravity.BOTTOM | Gravity.END);
+            getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         }
     }
 
@@ -66,7 +67,13 @@ public class ChatFragment extends DialogFragment {
         Button sendButton = view.findViewById(R.id.send_button);
 
         chatRecyclerView = view.findViewById(R.id.chat_recycler_view);
-        messages = new ArrayList<>();
+        if (savedInstanceState != null) {
+            messages = savedInstanceState.getStringArrayList("messages");
+            isInitialMessageAdded = true;
+        } else {
+            messages = new ArrayList<>();
+        }
+
         chatAdapter = new ChatAdapter(messages);
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         chatRecyclerView.setAdapter(chatAdapter);
@@ -74,9 +81,10 @@ public class ChatFragment extends DialogFragment {
         executorService = Executors.newSingleThreadExecutor();
         mainHandler = new Handler(Looper.getMainLooper());
 
-
-        initializeBotMessage();
-
+        if (savedInstanceState == null) {
+            initializeBotMessage();
+            isInitialMessageAdded = true;
+        }
 
         sendButton.setOnClickListener(v -> {
             String prompt = userInput.getText().toString();
@@ -137,6 +145,11 @@ public class ChatFragment extends DialogFragment {
         messages.add(message);
         chatAdapter.notifyItemInserted(messages.size() - 1);
         chatRecyclerView.scrollToPosition(messages.size() - 1);
+    }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("messages", new ArrayList<>(messages));
     }
 
     @Override
