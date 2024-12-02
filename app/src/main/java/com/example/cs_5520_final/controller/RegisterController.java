@@ -36,6 +36,11 @@ public class RegisterController {
             return;
         }
 
+        if (password.length() < 3){
+            registerActivity.showToast("Password needs to be at least 3 characters long");
+            return;
+        }
+
         UserDao userDao = UserDb.getInstance(registerActivity).userDao();
         new Thread(() -> {
             UserEntity existingUser = userDao.getUserByEmail(email);

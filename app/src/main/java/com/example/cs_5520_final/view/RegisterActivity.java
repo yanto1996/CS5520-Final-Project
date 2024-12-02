@@ -3,7 +3,6 @@ package com.example.cs_5520_final.view;
 import static com.example.cs_5520_final.R.*;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         registerButton.setOnClickListener(v -> registerController.registerUser());
     }
+
 
     public String getFirstName() {
         return firstNameEditText.getText().toString().trim();
