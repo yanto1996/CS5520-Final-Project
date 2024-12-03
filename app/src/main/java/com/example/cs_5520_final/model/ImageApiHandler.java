@@ -1,19 +1,18 @@
 package com.example.cs_5520_final.model;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class ImageApiHandler {
 
-    private static final String API_URL = "https://api.openai.com/v1/chat/completions";  // Endpoint for ChatGPT API
+    private static final String API_URL = "https://api.openai.com/v1/chat/completions";  // ChatGPT endpoint
     private final String apiKey;
     private final OkHttpClient client;
 
@@ -36,31 +35,52 @@ public class ImageApiHandler {
             throw new IllegalArgumentException("Image file must not be null or non-existent");
         }
 
-        // Prepare the image file for sending
-        RequestBody fileBody = RequestBody.create(imageFile, MediaType.parse("image/jpeg"));
-        MultipartBody requestBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("file", imageFile.getName(), fileBody)
-                .addFormDataPart("model", "gpt-4-turbo")  // Specify the model
-                .addFormDataPart("prompt", "Analyze this image and identify the animal; " +
-                        "provide information such as natural habitat, food sources, whether it is suitable as pet " +
-                        "and other things you think are important.")
-                .build();
+        // Read the image file and convert to Base64 manually for API 24 compatibility
+        String base64Image = encodeFileToBase64(imageFile);
 
-        // Build the request with the Authorization header
+        // Create the JSON body for the API request
+        JSONObject requestBodyJson = new JSONObject();
+        try {
+            requestBodyJson.put("model", "gpt-4-turbo");  // Specify the model
+            requestBodyJson.put("messages", new JSONArray()
+                    .put(new JSONObject().put("role", "system").put("content", "You are an AI that provides animal information."))
+                    .put(new JSONObject().put("role", "user").put("content",
+                            "Analyze this image (attached below) and identify the animal. Provide information such as natural habitat, food sources, suitability as a pet, and other notable details."))
+                    .put(new JSONObject().put("role", "user").put("content", "[IMAGE DATA START]\n" + base64Image + "\n[IMAGE DATA END]"))
+            );
+        } catch (JSONException e) {
+            throw new IOException("Error building JSON request body: " + e.getMessage(), e);
+        }
+
+        // Build the request
+        RequestBody requestBody = RequestBody.create(requestBodyJson.toString(), MediaType.parse("application/json"));
         Request request = new Request.Builder()
                 .url(API_URL)
                 .post(requestBody)
-                .addHeader("Authorization", "Bearer " + apiKey)  // Use the API key here for authentication
+                .addHeader("Authorization", "Bearer " + apiKey)
+                .addHeader("Content-Type", "application/json")
                 .build();
 
         // Execute the request and capture the response
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
-                String errorBody = response.body().string();
-                throw new IOException("API error: " + errorBody);
+                return response.body().string();  // Return the successful response
+            } else {
+                String errorBody = response.body() != null ? response.body().string() : "No response body";
+                throw new IOException("API error: " + response.code() + " - " + response.message() + " - " + errorBody);
             }
-            return response.body() != null ? response.body().string() : "No response";
+        }
+    }
+
+    // Method to encode a file to Base64 string (compatible with API 24)
+    private String encodeFileToBase64(File file) throws IOException {
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            byte[] buffer = new byte[(int) file.length()];
+            int bytesRead = fileInputStream.read(buffer);
+            if (bytesRead == -1) {
+                throw new IOException("Failed to read file for Base64 encoding.");
+            }
+            return android.util.Base64.encodeToString(buffer, android.util.Base64.NO_WRAP);
         }
     }
 }
