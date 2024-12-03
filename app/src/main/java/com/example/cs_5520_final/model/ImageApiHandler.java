@@ -19,6 +19,9 @@ public class ImageApiHandler {
 
     // Constructor: initializes API key and sets up client
     public ImageApiHandler(String apiKey) {
+        if (apiKey == null || apiKey.isEmpty()) {
+            throw new IllegalArgumentException("API Key is missing. Set the API key.");
+        }
         this.apiKey = apiKey;
         this.client = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
@@ -39,7 +42,9 @@ public class ImageApiHandler {
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("file", imageFile.getName(), fileBody)
                 .addFormDataPart("model", "gpt-4-turbo")  // Specify the model
-                .addFormDataPart("prompt", "Identify the animal in the image and provide additional information.")
+                .addFormDataPart("prompt", "Analyze this image and identify the animal; " +
+                        "provide information such as natural habitat, food sources, whether it is suitable as pet " +
+                        "and other things you think are important.")
                 .build();
 
         // Build the request with the Authorization header
@@ -52,10 +57,10 @@ public class ImageApiHandler {
         // Execute the request and capture the response
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
-                return response.body().string();  // Return the response body as a string
-            } else {
-                throw new IOException("Unexpected response code: " + response.code());
+                String errorBody = response.body().string();
+                throw new IOException("API error: " + errorBody);
             }
+            return response.body() != null ? response.body().string() : "No response";
         }
     }
 }

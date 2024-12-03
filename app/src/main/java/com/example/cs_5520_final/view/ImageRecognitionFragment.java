@@ -6,6 +6,7 @@ import com.example.cs_5520_final.R;
 import com.example.cs_5520_final.controller.ImageController;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.Intent;
 import android.app.Activity;
@@ -32,6 +33,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import android.util.Log;
+
+import java.util.Arrays;
+import java.util.Properties;
+
 
 public class ImageRecognitionFragment extends Fragment {
 
@@ -65,7 +70,10 @@ public class ImageRecognitionFragment extends Fragment {
         }
 
         // Initialize ImageController with actual API key
-        String apiKey = System.getenv("OPENAI_API_KEY_IMG"); // ASK FOR .ENV FILE
+        String apiKey = loadApiKey();
+        if (apiKey==null || apiKey.isEmpty() || apiKey.equals("REPLACE_WITH_API_KEY")){
+            throw new IllegalStateException("API key is not set or invalid");
+        }
         imageController = new ImageController(apiKey);
 
         // Initialize UI components
@@ -74,10 +82,50 @@ public class ImageRecognitionFragment extends Fragment {
         Button uploadButton = view.findViewById(R.id.upload_button);
 
         // Upload button to open the image selector
-        uploadButton.setOnClickListener(v -> openImageSelector());
+        uploadButton.setOnClickListener(v -> {
+            String[] filePaths = {"/sdcard/Download/images.jpeg", "/sdcard/Download/Mc CAT.jpg"};
+            for (String path : filePaths) {
+                refreshMediaStore(requireContext(), path);
+            }
+            openImageSelector();
+        });
+
 
         return view;
     }
+
+    private void refreshMediaStore(Context context, String filePath) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            Uri contentUri = Uri.fromFile(file);
+            mediaScanIntent.setData(contentUri);
+            context.sendBroadcast(mediaScanIntent);
+            Log.d(TAG, "Media store refreshed for: " + filePath);
+        } else {
+            Log.e(TAG, "File does not exist: " + filePath);
+        }
+    }
+
+
+    private String loadApiKey() {
+        try {
+            String[] files = requireContext().getAssets().list("");
+            Log.d(TAG, "Assets files: " + Arrays.toString(files));
+
+            InputStream inputStream = requireContext().getAssets().open("apikey.properties");
+            Properties properties = new Properties();
+            properties.load(inputStream);
+
+            String apiKey = properties.getProperty("API_KEY_IMG", "");
+            Log.d(TAG, "Loaded API Key: " + apiKey);
+            return apiKey;
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to load API key from properties file", e);
+            return "";
+        }
+    }
+
 
     private final ActivityResultLauncher<Intent> pickImageLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -103,10 +151,12 @@ public class ImageRecognitionFragment extends Fragment {
     );
 
     private void openImageSelector() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
         pickImageLauncher.launch(intent);
     }
+
 
     // Convert Uri to File so it can be processed by ImageController
     private File createFileFromUri(Uri uri) throws IOException {
@@ -147,4 +197,5 @@ public class ImageRecognitionFragment extends Fragment {
             }
         });
     }
+
 }

@@ -23,6 +23,18 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField(
+                "String",
+                "OPENAI_API_KEY",
+                "\"${System.getenv("OPENAI_API_KEY_IMG") ?: "REPLACE_WITH_API_KEY"}\""
+            )
+        }
+        debug {
+            buildConfigField(
+                "String",
+                "OPENAI_API_KEY",
+                "\"${System.getenv("OPENAI_API_KEY_IMG") ?: "REPLACE_WITH_API_KEY"}\""
+            )
         }
     }
     compileOptions {
@@ -31,11 +43,11 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -52,4 +64,3 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     annotationProcessor(libs.room.compiler)
 }
-
