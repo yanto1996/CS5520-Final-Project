@@ -50,12 +50,18 @@ public class LoginController {
             return;
         }
 
-        UserDb userDb = UserDb.getInstance(context); // Use proper context
+        UserDb userDb = UserDb.getInstance(context);
         UserDao userDao = userDb.userDao();
 
         executor.execute(() -> {
             UserEntity user = userDao.getUserByEmailAndPassword(email, password);
             if (user != null) {
+                // Store email and password in SharedPreferences to fetch in profile page
+                context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                        .edit()
+                        .putString("email", email)
+                        .putString("password", password)
+                        .apply();
                 callback.onLoginSuccess();
             } else {
                 callback.onLoginError("Invalid email or password");

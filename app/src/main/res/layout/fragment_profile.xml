@@ -37,22 +37,6 @@
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
 
-    <!-- Username -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Username"
-        android:textColor="@color/gray"
-        android:layout_marginTop="8dp" />
-
-    <TextView
-        android:id="@+id/profileUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="username"
-        android:layout_marginBottom="8dp" />
-
-    <!-- Email -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,7 +51,6 @@
         android:text="user@example.com"
         android:layout_marginBottom="8dp" />
 
-    <!-- Phone -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

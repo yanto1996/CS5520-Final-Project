@@ -1,6 +1,8 @@
 package com.example.cs_5520_final.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -53,15 +55,22 @@ public class RegisterController {
                 UserEntity user = new UserEntity(firstName, lastName, email, password, phoneNumber);
 
                 // Save user data in Room database
-                new Thread(() -> {
-                    userDao.insertUser(user);
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        registerActivity.showToast("User registered successfully!");
-                        Intent home = new Intent(registerActivity, HomeActivity.class);
-                        registerActivity.startActivity(home);
-                        registerActivity.finishActivity();
-                    });
-                }).start();
+                userDao.insertUser(user);
+
+                // Store email and password in SharedPreferences
+                SharedPreferences sharedPreferences = registerActivity.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("email", email);
+                editor.putString("password", password);
+                editor.apply();
+
+                // Navigate to HomeActivity
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    registerActivity.showToast("User registered successfully!");
+                    Intent home = new Intent(registerActivity, HomeActivity.class);
+                    registerActivity.startActivity(home);
+                    registerActivity.finishActivity();
+                });
             }
         }).start();
     }
