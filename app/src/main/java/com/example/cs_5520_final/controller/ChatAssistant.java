@@ -8,22 +8,34 @@ import java.util.Properties;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * Chat Assistant Controller that handles API logic for OpenAPI endpoint
+ */
 public class ChatAssistant {
 
+    /**
+     *Chatbot feature using OpenAI endpoint
+     * @param apiKey Authenticate API Key
+     * @param model GPT version model
+     * @param prompt user prompt
+     * @return GPT generated response
+     */
     public static String chatGPT(String apiKey, String model, String prompt) {
         try {
             System.out.println("Starting chatGPT method...");
 
+            // endpoint definition
             String urlString = "https://api.openai.com/v1/chat/completions";
             URL url = new URL(urlString);
 
-
+            // set up request method
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
 
-            
             connection.setRequestProperty("Authorization", "Bearer " + apiKey);
             connection.setRequestProperty("Content-Type", "application/json");
+
+            // response body
             String requestBody = "{"
                     + "\"model\": \"" + model + "\", "
                     + "\"messages\": ["
@@ -40,16 +52,16 @@ public class ChatAssistant {
                     + "}";
             System.out.println("Setting up system message...");
 
-
-
             System.out.println("Request body: " + requestBody);
 
+            // send the request with payload
             connection.setDoOutput(true);
             try (OutputStream os = connection.getOutputStream()) {
                 os.write(requestBody.getBytes("utf-8"));
             }
             System.out.println("Request sent successfully.");
 
+            // handles response
             int responseCode = connection.getResponseCode();
             if (responseCode == 200) {
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
@@ -75,6 +87,12 @@ public class ChatAssistant {
             return "An error occurred: " + e.getMessage();
         }
     }
+
+    /**
+     * Method that parses the response so it is readable
+     * @param rawResponse raw response from OpenAI endpoint
+     * @return string parsed response
+     */
     private static String parseResponse(String rawResponse) {
         try {
             JSONObject jsonResponse = new JSONObject(rawResponse);
@@ -103,6 +121,10 @@ public class ChatAssistant {
         }
     }
 
+    /**
+     * Method that retrieves API key from assets
+     * @return API Key as a string type
+     */
     public static String getApiKeyFromAssets() {
         Properties properties = new Properties();
         String apiKey = null;
@@ -141,11 +163,6 @@ public class ChatAssistant {
             return "Response parsing error.";
         }
     }
-
-
-
-
-
 
     public static void main(String[] args) {
         String model = "gpt-3.5-turbo";

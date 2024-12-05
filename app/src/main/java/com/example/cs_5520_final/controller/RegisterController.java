@@ -12,14 +12,31 @@ import com.example.cs_5520_final.view.RegisterActivity;
 import com.example.cs_5520_final.model.UserDao;
 import com.example.cs_5520_final.model.UserEntity;
 
+/**
+ * Register Controller class that handles all back end logic for registration
+ * Handles all validation logic such as checking for email duplication
+ * Saves the user information into Room Database for validation during login
+ */
+
 public class RegisterController {
 
+
     private final RegisterActivity registerActivity;
+
+    /**
+     * constructor for register controller
+     * @param registerActivity register activity that takes in the user inputs
+     */
 
     public RegisterController(RegisterActivity registerActivity) {
         this.registerActivity = registerActivity;
     }
 
+    /**
+     * Register user method that validates user inputs and saves user information into room
+     * Method also stores user information into sharedPreference to query in profile page
+     * Takes user to the home fragment upon successful registration
+     */
     public void registerUser() {
         String firstName = registerActivity.getFirstName();
         String lastName = registerActivity.getLastName();
@@ -27,6 +44,7 @@ public class RegisterController {
         String password = registerActivity.getPassword();
         String phoneNumber = registerActivity.getPhoneNumber();
 
+        // Validate user inputs
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() ||
                 password.isEmpty() || phoneNumber.isEmpty()) {
             registerActivity.showToast("Please fill out all fields");
@@ -43,7 +61,9 @@ public class RegisterController {
             return;
         }
 
+        // Instantiate Room DAO to store user information
         UserDao userDao = UserDb.getInstance(registerActivity).userDao();
+        // spawn a BG thread to perform DB operation
         new Thread(() -> {
             UserEntity existingUser = userDao.getUserByEmail(email);
             if (existingUser != null) {

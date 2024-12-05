@@ -17,11 +17,20 @@ import com.example.cs_5520_final.view.PetViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Pet Adapter Class that is focused on displaying pet information from SQLite
+ * Binds data from PetModel Interface into PetViewHolder
+ * Handles backend logic for adoption inquires as well as pet details
+ */
 public class PetAdapter extends RecyclerView.Adapter<PetViewHolder> {
 
     private List<PetModel> petList = new ArrayList<>();
     private Context context;
 
+    /**
+     * Constructor for new pet adapter
+     * @param context information in current activity (home fragment)
+     */
     public PetAdapter(Context context) {
         this.context = context;
     }
@@ -32,6 +41,7 @@ public class PetAdapter extends RecyclerView.Adapter<PetViewHolder> {
         notifyDataSetChanged();
     }
 
+    // Binds Pet Model into PetViewHolder
     @NonNull
     @Override
     public PetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -39,6 +49,7 @@ public class PetAdapter extends RecyclerView.Adapter<PetViewHolder> {
         return new PetViewHolder(view);
     }
 
+    // Displays pet information
     @Override
     public void onBindViewHolder(@NonNull PetViewHolder holder, int position) {
         PetModel pet = petList.get(position);
@@ -66,6 +77,7 @@ public class PetAdapter extends RecyclerView.Adapter<PetViewHolder> {
         holder.itemView.setOnClickListener(v -> showPetDetailsDialog(pet));
     }
 
+    // Displays pet description
     private void showPetDetailsDialog(PetModel pet) {
         // Create a detailed description for the pet
         String description = "Name: " + pet.getName() + "\n" +
