@@ -1,5 +1,7 @@
 package com.example.cs_5520_final.model;
 
+import android.util.Log;
+
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,20 +39,39 @@ public class ImageApiHandler {
 
         // Read the image file and convert to Base64 manually for API 24 compatibility
         String base64Image = encodeFileToBase64(imageFile);
+        Log.e("Base64Image", base64Image);
 
         // Create the JSON body for the API request
         JSONObject requestBodyJson = new JSONObject();
         try {
-            requestBodyJson.put("model", "gpt-4-turbo");  // Specify the model
-            requestBodyJson.put("messages", new JSONArray()
-                    .put(new JSONObject().put("role", "system").put("content", "You are an AI that provides animal information."))
-                    .put(new JSONObject().put("role", "user").put("content",
-                            "Analyze this image (attached below) and identify the animal. Provide information such as natural habitat, food sources, suitability as a pet, and other notable details."))
-                    .put(new JSONObject().put("role", "user").put("content", "[IMAGE DATA START]\n" + base64Image + "\n[IMAGE DATA END]"))
-            );
+            JSONArray messagesArray = new JSONArray();
+
+            // Add the text part of the prompt
+            JSONObject textMessage = new JSONObject();
+            textMessage.put("type", "text");
+            textMessage.put("text", "Analyze this image and identify the animal. Provide details such as habitat, food sources, suitability as a pet, and any other relevant information.");
+
+            // Add the image part as a Base64-encoded string
+            JSONObject imageMessage = new JSONObject();
+            imageMessage.put("type", "image_url");
+            imageMessage.put("image_url", new JSONObject().put("url", "data:image/jpeg;base64," + base64Image));
+
+            // Create a "user" message containing both the text and the image
+            JSONObject userMessage = new JSONObject();
+            userMessage.put("role", "user");
+            userMessage.put("content", new JSONArray().put(textMessage).put(imageMessage));
+
+            // Add the user message to the messages array
+            messagesArray.put(userMessage);
+
+            // Final request body
+            requestBodyJson.put("model", "gpt-4-turbo");
+            requestBodyJson.put("messages", messagesArray);
+
         } catch (JSONException e) {
             throw new IOException("Error building JSON request body: " + e.getMessage(), e);
         }
+
 
         // Build the request
         RequestBody requestBody = RequestBody.create(requestBodyJson.toString(), MediaType.parse("application/json"));

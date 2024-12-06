@@ -191,9 +191,9 @@ public class ImageRecognitionFragment extends Fragment {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "startImageScanning: Image recognition failed", e);
-                requireActivity().runOnUiThread(() ->
-                        Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                );
+                requireActivity().runOnUiThread(() -> {
+                    Log.e("Error", e.getMessage()); // Corrected placement of the semicolon and method
+                });
             }
         });
     }

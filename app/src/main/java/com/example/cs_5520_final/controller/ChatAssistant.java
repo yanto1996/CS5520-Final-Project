@@ -71,10 +71,6 @@ public class ChatAssistant {
                         response.append(line.trim());
                     }
                     String parsedResponse = parseResponse(response.toString());
-
-//                    System.out.println("Response received: " + response.toString());
-//                    return extractMessageFromJSONResponse(response.toString());
-//                    return response.toString();
                     return parsedResponse.toString();
                 }
             } else {
