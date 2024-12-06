@@ -35,9 +35,6 @@
             android:name=".view.HomeActivity"
             android:exported="false" /> <!-- PasswordResetActivity -->
         <activity
-            android:name=".view.PasswordResetActivity"
-            android:exported="false" /> <!-- MainActivity (no longer the launcher activity) -->
-        <activity
             android:name=".MainActivity"
             android:exported="true" />
         <activity android:name=".view.ChatActivity" />
