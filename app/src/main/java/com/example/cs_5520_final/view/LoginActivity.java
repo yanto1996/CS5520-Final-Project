@@ -28,7 +28,6 @@ public class LoginActivity extends AppCompatActivity implements LoginController.
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
-        TextView forgotPasswordText = findViewById(R.id.forgotPasswordText);
         TextView registration = findViewById(R.id.register);
 
         loginController = new LoginController(this, this);
@@ -40,12 +39,6 @@ public class LoginActivity extends AppCompatActivity implements LoginController.
             if (loginController.validateInput(email, password)) {
                 loginController.performLogin(email, password);
             }
-        });
-
-        // Set up forgot password text click listener
-        forgotPasswordText.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, PasswordResetActivity.class);
-            startActivity(intent);
         });
 
         registration.setOnClickListener(v -> {
