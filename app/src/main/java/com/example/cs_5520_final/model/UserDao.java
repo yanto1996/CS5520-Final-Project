@@ -6,6 +6,7 @@ import androidx.room.Query;
 
 /**
  * Data Access Object to do DB work
+ * Insert, get by email, get by email and password methods
  */
 @Dao
 public interface UserDao {
@@ -19,7 +20,4 @@ public interface UserDao {
     @Query("SELECT * FROM users WHERE email = :email AND password = :password LIMIT 1")
     UserEntity getUserByEmailAndPassword(String email, String password);
 
-    // New method to get the first user
-    @Query("SELECT * FROM users LIMIT 1")
-    UserEntity getUser();
 }

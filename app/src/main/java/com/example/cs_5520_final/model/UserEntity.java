@@ -3,6 +3,10 @@ package com.example.cs_5520_final.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+/**
+ * Entity class which represents the table for Room Database
+ * Creates a user entity class that contains all the information we want to store in DB
+ */
 @Entity(tableName = "users")
 public class UserEntity {
     @PrimaryKey(autoGenerate = true)
@@ -21,6 +25,10 @@ public class UserEntity {
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * get and set methods for the user entity
+     * @return attributes of the user entity
+     */
     public int getId() {
         return id;
     }
@@ -33,16 +41,8 @@ public class UserEntity {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -64,12 +64,4 @@ public class UserEntity {
     public String getPhoneNumber() {
         return phoneNumber;
     }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-
-
-
 }

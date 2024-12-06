@@ -10,8 +10,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 
+/**
+ * DB Helper class that helps move SQLite db file from assets to internal storage
+ */
 public class DbHelper {
-
     private static final String TAG = "PetDatabaseHelper";
     private static final String DB_NAME = "petfinder.db";
     private static final String DB_PATH = "/data/data/com.example.cs_5520_final/databases/";

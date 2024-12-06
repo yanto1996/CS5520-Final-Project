@@ -8,10 +8,19 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
+/**
+ * Pet viewmodel class that helps manage live pet data
+ * Can be identified as the service method for the DAO
+ * Calls the DAO to manage pet data from SQLite
+ */
 public class PetViewModel extends AndroidViewModel {
     private MutableLiveData<List<PetModel>> petListLiveData;
     private PetDao petDao;
 
+    /**
+     * constructs a pet viewmodel object
+     * @param application application context, environment to access specific data
+     */
     public PetViewModel(Application application) {
         super(application);
         petListLiveData = new MutableLiveData<>();
@@ -26,6 +35,11 @@ public class PetViewModel extends AndroidViewModel {
         }).start();
     }
 
+    /**
+     * Creates a new pet model with specific search parameters
+     * @param search user search inputs
+     * sets the live data of the view to be new pet model with search query
+     */
     public void searchByTypeOrBreed(String search){
         List<PetModel> pets = petDao.getPetsByTypeOrBreed(search);
         petListLiveData.setValue(pets);
@@ -36,8 +50,8 @@ public class PetViewModel extends AndroidViewModel {
         petListLiveData.setValue(pets);
     }
 
-    public void searchByTypeStateAndAge(String type, String state, int age) {
-        List<PetModel> pets = petDao.getPetsByTypeStateAndAge(type, state, age);
+    public void searchByTypeStateAndAge(String typeOrBreed, String state, int age) {
+        List<PetModel> pets = petDao.getPetsByTypeBreedStateAndAge(typeOrBreed, state, age);
         petListLiveData.setValue(pets);
     }
 
