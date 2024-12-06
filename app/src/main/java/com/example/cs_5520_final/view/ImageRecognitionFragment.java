@@ -69,44 +69,28 @@ public class ImageRecognitionFragment extends Fragment {
             }
         }
 
-        // Initialize ImageController with actual API key
-        String apiKey = loadApiKey();
-        if (apiKey==null || apiKey.isEmpty() || apiKey.equals("REPLACE_WITH_API_KEY")){
-            throw new IllegalStateException("API key is not set or invalid");
-        }
-        imageController = new ImageController(apiKey);
-
         // Initialize UI components
         imageView = view.findViewById(R.id.image_view);
         resultTextView = view.findViewById(R.id.result_text_view);
         Button uploadButton = view.findViewById(R.id.upload_button);
 
-        // Upload button to open the image selector
+        // Upload button to open the image selector and initialize the API key
         uploadButton.setOnClickListener(v -> {
-            String[] filePaths = {"/sdcard/Download/images.jpeg", "/sdcard/Download/Mc CAT.jpg"};
-            for (String path : filePaths) {
-                refreshMediaStore(requireContext(), path);
+            String apiKey = loadApiKey();
+            if (apiKey == null || apiKey.isEmpty() || apiKey.equals("REPLACE_WITH_API_KEY")) {
+                Toast.makeText(requireContext(), "API key is not set or invalid", Toast.LENGTH_LONG).show();
+                return;
             }
+
+            // Initialize the ImageController with a valid API key
+            imageController = new ImageController(apiKey);
+
+            // Trigger the image selector
             openImageSelector();
         });
 
-
         return view;
     }
-
-    private void refreshMediaStore(Context context, String filePath) {
-        File file = new File(filePath);
-        if (file.exists()) {
-            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            Uri contentUri = Uri.fromFile(file);
-            mediaScanIntent.setData(contentUri);
-            context.sendBroadcast(mediaScanIntent);
-            Log.d(TAG, "Media store refreshed for: " + filePath);
-        } else {
-            Log.e(TAG, "File does not exist: " + filePath);
-        }
-    }
-
 
     private String loadApiKey() {
         try {
@@ -125,7 +109,6 @@ public class ImageRecognitionFragment extends Fragment {
             return "";
         }
     }
-
 
     private final ActivityResultLauncher<Intent> pickImageLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -157,8 +140,6 @@ public class ImageRecognitionFragment extends Fragment {
         pickImageLauncher.launch(intent);
     }
 
-
-    // Convert Uri to File so it can be processed by ImageController
     private File createFileFromUri(Uri uri) throws IOException {
         File file = new File(requireContext().getCacheDir(), "selected_image.jpg");
         Log.d(TAG, "createFileFromUri: Attempting to create file from URI.");
@@ -181,6 +162,11 @@ public class ImageRecognitionFragment extends Fragment {
 
     private void startImageScanning(File imageFile) {
         Log.d(TAG, "startImageScanning: Starting image scanning for file - " + imageFile.getAbsolutePath());
+        if (imageController == null) {
+            Toast.makeText(requireContext(), "ImageController is not initialized", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         imageController.identifyAnimal(imageFile, new ImageController.ImageScanCallback() {
             @Override
             public void onSuccess(String result) {
@@ -191,11 +177,8 @@ public class ImageRecognitionFragment extends Fragment {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "startImageScanning: Image recognition failed", e);
-                requireActivity().runOnUiThread(() -> {
-                    Log.e("Error", e.getMessage()); // Corrected placement of the semicolon and method
-                });
+                requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Image recognition failed", Toast.LENGTH_SHORT).show());
             }
         });
     }
-
 }
