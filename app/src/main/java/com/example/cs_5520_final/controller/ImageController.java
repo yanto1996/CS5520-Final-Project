@@ -3,40 +3,34 @@ package com.example.cs_5520_final.controller;
 import com.example.cs_5520_final.model.ImageApiHandler;
 
 import java.io.File;
-import java.io.IOException;
 
-/**
- *
- */
 public class ImageController {
 
     private final ImageApiHandler imageApiHandler;
 
-    // Constructor initializes the controller with the API handler
+    // Constructor
     public ImageController(String apiKey) {
         this.imageApiHandler = new ImageApiHandler(apiKey);
     }
 
-    // Method to initiate image scanning and notify View through callback
+    // Identify the animal in the image
     public void identifyAnimal(File imageFile, ImageScanCallback callback) {
-        // Start a background thread to avoid blocking the UI
-        new Thread(() -> {
-            try {
-                // Use ImageApiHandler to scan the image
-                String result = imageApiHandler.scanImage(imageFile);
-
-                // Pass the result to the callback on success
+        imageApiHandler.scanImage(imageFile, new ImageApiHandler.ApiCallback() {
+            @Override
+            public void onSuccess(String result) {
                 callback.onSuccess(result);
-            } catch (IOException e) {
-                // Pass the error to the callback on failure
+            }
+
+            @Override
+            public void onFailure(Exception e) {
                 callback.onFailure(e);
             }
-        }).start();
+        });
     }
 
-    // Callback interface to handle asynchronous responses
+    // Interface for handling responses from the API
     public interface ImageScanCallback {
-        void onSuccess(String result);  // Called when the image scan is successful
-        void onFailure(Exception e);    // Called when there's an error during scanning
+        void onSuccess(String result);
+        void onFailure(Exception e);
     }
 }

@@ -13,13 +13,14 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.Properties;
@@ -85,7 +89,6 @@ public class ImageRecognitionFragment extends Fragment {
             // Initialize the ImageController with a valid API key
             imageController = new ImageController(apiKey);
 
-            // Trigger the image selector
             openImageSelector();
         });
 
@@ -134,10 +137,43 @@ public class ImageRecognitionFragment extends Fragment {
     );
 
     private void openImageSelector() {
+        // Refresh the media store for all image files in the folder
+        refreshMediaStoreForFolder("/sdcard/Download");
+
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/*");
         pickImageLauncher.launch(intent);
+    }
+
+    private void refreshMediaStoreForFolder(String folderPath) {
+        File folder = new File(folderPath);
+        if (folder.exists() && folder.isDirectory()) {
+            File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png"));
+
+            if (files != null) {
+                for (File file : files) {
+                    refreshMediaStore(requireContext(), file.getAbsolutePath());
+                }
+            } else {
+                Log.e(TAG, "No files found in folder: " + folderPath);
+            }
+        } else {
+            Log.e(TAG, "Invalid folder path: " + folderPath);
+        }
+    }
+
+    private void refreshMediaStore(Context context, String filePath) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            Uri contentUri = Uri.fromFile(file);
+            mediaScanIntent.setData(contentUri);
+            context.sendBroadcast(mediaScanIntent);
+            Log.d(TAG, "Media store refreshed for: " + filePath);
+        } else {
+            Log.e(TAG, "File not found for refreshing media store: " + filePath);
+        }
     }
 
     private File createFileFromUri(Uri uri) throws IOException {
@@ -161,24 +197,31 @@ public class ImageRecognitionFragment extends Fragment {
     }
 
     private void startImageScanning(File imageFile) {
-        Log.d(TAG, "startImageScanning: Starting image scanning for file - " + imageFile.getAbsolutePath());
-        if (imageController == null) {
-            Toast.makeText(requireContext(), "ImageController is not initialized", Toast.LENGTH_LONG).show();
-            return;
-        }
-
         imageController.identifyAnimal(imageFile, new ImageController.ImageScanCallback() {
             @Override
             public void onSuccess(String result) {
-                Log.d(TAG, "startImageScanning: Image recognition successful - " + result);
-                requireActivity().runOnUiThread(() -> resultTextView.setText(result));
+                Log.d(TAG, "Image recognition successful: " + result);
+                try {
+                    JSONObject jsonResponse = new JSONObject(result);
+                    JSONArray choices = jsonResponse.getJSONArray("choices");
+                    String content = choices.getJSONObject(0).getJSONObject("message").getString("content");
+
+                    // Update the UI with the result
+                    requireActivity().runOnUiThread(() -> resultTextView.setText(content));
+                } catch (Exception e) {
+                    Log.e(TAG, "Error parsing API response", e);
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), "Error parsing API response", Toast.LENGTH_SHORT).show());
+                }
             }
 
             @Override
             public void onFailure(Exception e) {
-                Log.e(TAG, "startImageScanning: Image recognition failed", e);
-                requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Image recognition failed", Toast.LENGTH_SHORT).show());
+                Log.e(TAG, "Image recognition failed", e);
+                requireActivity().runOnUiThread(() ->
+                        Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             }
         });
     }
+
 }
