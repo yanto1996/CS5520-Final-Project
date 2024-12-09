@@ -21,11 +21,13 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +78,16 @@ public class ImageRecognitionFragment extends Fragment {
         // Initialize UI components
         imageView = view.findViewById(R.id.image_view);
         resultTextView = view.findViewById(R.id.result_text_view);
+        resultTextView.setMovementMethod(new ScrollingMovementMethod());
+
+        // Debugging for ScrollView and TextView heights
+        ScrollView scrollView = view.findViewById(R.id.scrollView);  // Assuming your ScrollView ID is 'scroll_view'
+        scrollView.post(() -> {
+            Log.d("ScrollViewHeight", "Height: " + scrollView.getHeight());
+            Log.d("TextViewHeight", "Height: " + resultTextView.getHeight());
+        });
+
+
         Button uploadButton = view.findViewById(R.id.upload_button);
 
         // Upload button to open the image selector and initialize the API key
@@ -150,7 +162,10 @@ public class ImageRecognitionFragment extends Fragment {
     private void refreshMediaStoreForFolder(String folderPath) {
         File folder = new File(folderPath);
         if (folder.exists() && folder.isDirectory()) {
-            File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png"));
+            File[] files = folder.listFiles((dir, name) ->
+                    name.toLowerCase().endsWith(".jpg")
+                            || name.toLowerCase().endsWith(".jpeg")
+                            || name.toLowerCase().endsWith(".png"));
 
             if (files != null) {
                 for (File file : files) {
