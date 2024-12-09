@@ -140,6 +140,7 @@ public class ImageRecognitionFragment extends Fragment {
         // Refresh the media store for all image files in the folder
         refreshMediaStoreForFolder("/sdcard/Download");
 
+        // Open the image selector
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/*");
@@ -175,6 +176,7 @@ public class ImageRecognitionFragment extends Fragment {
             Log.e(TAG, "File not found for refreshing media store: " + filePath);
         }
     }
+
 
     private File createFileFromUri(Uri uri) throws IOException {
         File file = new File(requireContext().getCacheDir(), "selected_image.jpg");
