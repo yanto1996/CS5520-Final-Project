@@ -1,15 +1,5 @@
 CS5520 Final Project: Pet Adoption App
 
-Table of Contents
-Overview
-Features
-Technologies Used
-Installation
-Usage
-Future Enhancements
-Contributors
-License
-
 Overview
 The Pet Adoption App is designed to assist users in finding their perfect pet. With functionalities like pet search, image-based pet identification, and an AI-powered chatbot, the app provides a seamless and engaging experience for users interested in pet adoption.
 
@@ -25,13 +15,12 @@ Development Environment: Android Studio
 Programming Language: Java
 Database: SQL
 AI Services: Chatgpt
-Authentication: Firebase Authentication
+Authentication: Room
 APIs: Chatgpt API
 
 Installation
 Prerequisites
 Android Studio installed on your system.
-Firebase project configured for authentication and database.
 Steps
 Clone the repository:
 bash
@@ -41,8 +30,6 @@ Open the project in Android Studio:
 Select File > Open and navigate to the project folder.
 Sync Gradle files:
 Android Studio will prompt you to sync Gradle. Click Sync Now to ensure all dependencies are installed.
-Set up Firebase:
-Add your google-services.json file to the app/ directory.
 Configure environment variables:
 Add your API keys in a secure way (e.g., local.properties or directly in your code for testing purposes).
 Build and run the app:
@@ -62,19 +49,4 @@ Pages Overview
    AI Chatbot: Ask questions about pet care, adoption, or other related topics.
    Sign Out: Log out of your account.
 
-Future Enhancements
-Add real-time chat functionality with pet shelters.
-Enable geolocation for more accurate search results.
-Implement saved searches and favorite pets functionality.
-Expand AI capabilities to provide behavior analysis or health predictions.
-
-Contributors
-Yan To
-Xiaolin Liu
-Liuyi Yang
-Jiachen Liang
-
-
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
-
+![img_1.png](img_1.png)
