@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import com.example.cs_5520_final.R;
 import com.example.cs_5520_final.controller.ImageController;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.Manifest;
 import android.content.Context;
@@ -49,6 +50,7 @@ public class ImageRecognitionFragment extends Fragment {
     private ImageController imageController;
     private ImageView imageView;
     private TextView resultTextView;
+    private boolean isApiLoading = false;
 
     private final ActivityResultLauncher<String> permissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -61,6 +63,11 @@ public class ImageRecognitionFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image_recognition, container, false);
+
+        // Initialize UI components
+        imageView = view.findViewById(R.id.image_view);
+        resultTextView = view.findViewById(R.id.result_text_view);
+        resultTextView.setMovementMethod(new ScrollingMovementMethod());
 
         // Request permission based on Android version
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {  // Android 13+
@@ -75,20 +82,15 @@ public class ImageRecognitionFragment extends Fragment {
             }
         }
 
-        // Initialize UI components
-        imageView = view.findViewById(R.id.image_view);
-        resultTextView = view.findViewById(R.id.result_text_view);
-        resultTextView.setMovementMethod(new ScrollingMovementMethod());
-
         // Debugging for ScrollView and TextView heights
-        ScrollView scrollView = view.findViewById(R.id.scrollView);  // Assuming your ScrollView ID is 'scroll_view'
+        ScrollView scrollView = view.findViewById(R.id.scrollView);
         scrollView.post(() -> {
             Log.d("ScrollViewHeight", "Height: " + scrollView.getHeight());
             Log.d("TextViewHeight", "Height: " + resultTextView.getHeight());
         });
 
 
-        Button uploadButton = view.findViewById(R.id.upload_button);
+        FloatingActionButton uploadButton = view.findViewById(R.id.upload_button);
 
         // Upload button to open the image selector and initialize the API key
         uploadButton.setOnClickListener(v -> {
@@ -125,6 +127,17 @@ public class ImageRecognitionFragment extends Fragment {
         }
     }
 
+    private void openImageSelector() {
+        // Refresh the media store for all image files in the folder
+        refreshMediaStoreForFolder("/sdcard/Download");
+
+        // Open the image selector
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        pickImageLauncher.launch(intent);
+    }
+
     private final ActivityResultLauncher<Intent> pickImageLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -148,16 +161,6 @@ public class ImageRecognitionFragment extends Fragment {
             }
     );
 
-    private void openImageSelector() {
-        // Refresh the media store for all image files in the folder
-        refreshMediaStoreForFolder("/sdcard/Download");
-
-        // Open the image selector
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        pickImageLauncher.launch(intent);
-    }
 
     private void refreshMediaStoreForFolder(String folderPath) {
         File folder = new File(folderPath);
@@ -214,16 +217,20 @@ public class ImageRecognitionFragment extends Fragment {
     }
 
     private void startImageScanning(File imageFile) {
+        isApiLoading = true;
+        updateTextView();
+
         imageController.identifyAnimal(imageFile, new ImageController.ImageScanCallback() {
             @Override
             public void onSuccess(String result) {
+                isApiLoading = false;
                 Log.d(TAG, "Image recognition successful: " + result);
                 try {
                     JSONObject jsonResponse = new JSONObject(result);
                     JSONArray choices = jsonResponse.getJSONArray("choices");
                     String content = choices.getJSONObject(0).getJSONObject("message").getString("content");
 
-                    // Update the UI with the result
+                    // Update the UI with the API response
                     requireActivity().runOnUiThread(() -> resultTextView.setText(content));
                 } catch (Exception e) {
                     Log.e(TAG, "Error parsing API response", e);
@@ -234,11 +241,21 @@ public class ImageRecognitionFragment extends Fragment {
 
             @Override
             public void onFailure(Exception e) {
+                isApiLoading = false;
                 Log.e(TAG, "Image recognition failed", e);
                 requireActivity().runOnUiThread(() ->
                         Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             }
         });
     }
+
+    private void updateTextView() {
+        if (isApiLoading) {
+            resultTextView.setText("Loading... Please wait!");
+        } else {
+            resultTextView.setText("Upload a photo here to identify the animal and learn more about it!");
+        }
+    }
+
 
 }
