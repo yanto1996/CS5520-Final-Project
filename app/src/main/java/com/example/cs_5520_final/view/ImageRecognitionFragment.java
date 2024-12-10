@@ -229,9 +229,10 @@ public class ImageRecognitionFragment extends Fragment {
                     JSONObject jsonResponse = new JSONObject(result);
                     JSONArray choices = jsonResponse.getJSONArray("choices");
                     String content = choices.getJSONObject(0).getJSONObject("message").getString("content");
+                    String cleanContent = content.replaceAll("\\*\\*","");
 
                     // Update the UI with the API response
-                    requireActivity().runOnUiThread(() -> resultTextView.setText(content));
+                    requireActivity().runOnUiThread(() -> resultTextView.setText(cleanContent));
                 } catch (Exception e) {
                     Log.e(TAG, "Error parsing API response", e);
                     requireActivity().runOnUiThread(() ->
