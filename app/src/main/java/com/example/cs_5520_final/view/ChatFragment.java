@@ -11,18 +11,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
 import com.example.cs_5520_final.R;
 import com.example.cs_5520_final.controller.ChatAssistant;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cs_5520_final.R;
-import com.example.cs_5520_final.view.ChatAdapter;
-import com.example.cs_5520_final.controller.ChatAssistant;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class ChatFragment extends DialogFragment {
         super.onStart();
         if (getDialog() != null && getDialog().getWindow() != null) {
             int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.83);
-            int height = (int) (getResources().getDisplayMetrics().heightPixels *0.8 );
+            int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.8);
 
             getDialog().getWindow().setLayout(width, height);
             getDialog().getWindow().setGravity(Gravity.BOTTOM | Gravity.END);
@@ -146,6 +146,7 @@ public class ChatFragment extends DialogFragment {
         chatAdapter.notifyItemInserted(messages.size() - 1);
         chatRecyclerView.scrollToPosition(messages.size() - 1);
     }
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);

@@ -45,7 +45,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             holder.messageContainer.setGravity(Gravity.START);
         }
 
-        // 设置消息内容
         holder.messageText.setText(message);
     }
 
