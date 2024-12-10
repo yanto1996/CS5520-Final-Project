@@ -69,8 +69,11 @@ Implement saved searches and favorite pets functionality.
 Expand AI capabilities to provide behavior analysis or health predictions.
 
 Contributors
-Your Name - Developer
-Your Team Members (if applicable)
+Yan To
+Xiaolin Liu
+Liuyi Yang
+Jiachen Liang
+
 
 License
 This project is licensed under the MIT License. See the LICENSE file for details.
