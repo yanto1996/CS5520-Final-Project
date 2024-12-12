@@ -14,6 +14,9 @@ import com.example.cs_5520_final.R;
 
 import java.util.List;
 
+/**
+ * Chat Adapter class that handles displaying the conversion between user and AI
+ */
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
     private final List<String> messages;

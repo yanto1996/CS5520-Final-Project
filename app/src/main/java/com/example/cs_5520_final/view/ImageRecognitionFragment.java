@@ -26,7 +26,6 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -45,6 +44,9 @@ import java.util.Arrays;
 import java.util.Properties;
 
 
+/**
+ * Image Recognition  fragment where users can upload an image and the API will identify the image and educate the user
+ */
 public class ImageRecognitionFragment extends Fragment {
 
     private ImageController imageController;

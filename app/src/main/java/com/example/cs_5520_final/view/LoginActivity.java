@@ -12,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cs_5520_final.R;
 import com.example.cs_5520_final.controller.LoginController;
 
+/**
+ * Login activity that displays all login information to the user. When the user submits a valid login, it will take the user to the home activity
+ */
 public class LoginActivity extends AppCompatActivity implements LoginController.LoginCallback {
 
     private EditText emailEditText;

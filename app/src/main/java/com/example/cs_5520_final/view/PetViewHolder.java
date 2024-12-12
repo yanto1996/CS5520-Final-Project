@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs_5520_final.R;
 
+/**
+ * Pet Viewholder class that extends the recycler view. The viewholder contains all the information we want the recycler view to display
+ */
 public class PetViewHolder extends RecyclerView.ViewHolder {
     public TextView petName;
     public TextView petBreed;

@@ -19,6 +19,10 @@ import com.example.cs_5520_final.R;
 import com.example.cs_5520_final.controller.PetAdapter;
 import com.example.cs_5520_final.model.PetViewModel;
 
+/**
+ * Home fragment that displays the recyclerView and allows users to interact with our adoption database
+ * Users can click into a pet profile and contact a adopter by sending them a message
+ */
 public class HomeFragment extends Fragment {
 
     private PetViewModel petViewModel;

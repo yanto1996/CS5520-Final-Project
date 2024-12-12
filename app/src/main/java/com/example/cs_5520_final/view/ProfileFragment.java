@@ -19,8 +19,10 @@ import com.example.cs_5520_final.model.UserEntity;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+/**
+ * Profile fragment of the home activity. This fragment displays the users information by utilizing Room Db and shared preferences
+ */
 public class ProfileFragment extends Fragment {
-
     private TextView profileName;
     private TextView profileEmail;
     private TextView profilePhone;

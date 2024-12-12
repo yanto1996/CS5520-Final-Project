@@ -31,6 +31,9 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Chat fragment that handles the implementation of the chatbot interface where users can send messages and receive AI generated responses
+ */
 public class ChatFragment extends DialogFragment {
 
     private RecyclerView chatRecyclerView;

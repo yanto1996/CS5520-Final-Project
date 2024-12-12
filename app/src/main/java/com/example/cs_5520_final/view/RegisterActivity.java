@@ -11,6 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cs_5520_final.R;
 import com.example.cs_5520_final.controller.RegisterController;
 
+/**
+ * Register activity class that creates all the items in the register activity
+ * On clicking the register button, users will be registered and taken to the home activity
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, phoneNumberEditText;

@@ -25,6 +25,9 @@ import com.example.cs_5520_final.controller.ChatAssistant;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Chat activity class that handles creating the interface for interaction between user and AI
+ */
 public class ChatActivity extends AppCompatActivity {
 
     private RecyclerView chatRecyclerView;

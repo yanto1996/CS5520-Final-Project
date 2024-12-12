@@ -4,11 +4,18 @@ import com.example.cs_5520_final.model.ImageApiHandler;
 
 import java.io.File;
 
+/**
+ * Image Controller class that manages backend logic for the image recognition
+ * Constructs a handler class to handle all backend logic
+ */
 public class ImageController {
 
     private final ImageApiHandler imageApiHandler;
 
-    // Constructor
+    /**
+     * constructor to create image controller that uses the imageApiHandler
+     * @param apiKey valid api key
+     */
     public ImageController(String apiKey) {
         this.imageApiHandler = new ImageApiHandler(apiKey);
     }
