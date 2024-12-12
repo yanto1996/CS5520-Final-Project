@@ -16,5 +16,4 @@
 local.properties
 /.idea
 .idea/misc.xml
-app/src/main/assets/apikey.properties
 gradle.properties
